@@ -1,17 +1,17 @@
 
-// Customizations to base bootstrap styles
+/* Customizations to base bootstrap styles */
 
 .container {
     margin: auto;
     width: auto;
-    max-width: 900px;
+    max-width: 1000px;
 }
 
 #topbar {
-    background-color: #303030;
+    background-color: #fafafa;
     position: relative;
-    color: #fffaea;
-    font-family: "Source Sans", "Helvetica Neue", sans-serif;
+    color: #303030;
+    font-family: "Droid Sans", "Helvetica Neue", sans-serif;
     font-weight: normal;
 }
 
@@ -31,7 +31,7 @@
     position: relative;
     display: inline-block;
     padding: 3px 15px;
-    color: #fffaea;
+    color: #202020;
     font-weight: normal;
     font-size: 10pt;
 }
@@ -43,11 +43,13 @@
 
 pre {
     border: 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
-    margin: 20px;
-    font-family: "Source Code Pro", "monospace";
+    margin: 20px 0px;
+    font-family: "Droid Sans Mono", "monospace";
     font-weight: light;
     font-size: 10pt;
     margin-bottom: 1em;
@@ -55,16 +57,17 @@ pre {
 }
 
 code {
-    font-family: "Source Code Pro", "monospace";
-    font-size: 10pt;
-    background-color: #f5f5f5;
+    font-family: "Droid Sans Mono", "monospace";
+    font-size: 11pt;
+    background-color: #fcfcfc;
     color: inherit;
 }
 
 .output {
     background-color: #fafafa;
-    border: 1px solid #f1f1f5;
-    margin: 0.5em 2.5em;
+    color: #222;
+    margin: 1.5em 0.0em;
+    margin-top: -1.5em;
 }
 
 img {
@@ -93,6 +96,7 @@ h1, h2, h3, h4, h5 {
     margin-top: 1.5em;
     margin-bottom: 8.0pt;
     color: #333;
+    font-family: "Droid Sans";
 }
 
 h1 a, h2 a, h3 a, h4 a, h5 a {
@@ -101,7 +105,7 @@ h1 a, h2 a, h3 a, h4 a, h5 a {
 
 body {
     text-rendering: optimizeLegibility;
-    font-family: "Source Sans", "Helvetica Neue", sans-serif;
+    font-family: "Droid Serif", "Helvetica Neue", sans-serif;
     font-size: 11.5pt;
     color: #333;
     background-color: #fafafa;
@@ -128,19 +132,18 @@ a {
 
 #table-of-contents {
     position: fixed;
-    background-color: #f6f6f8;
+    font-family: "Droid Sans", "Helvetica Neue", sans-serif;
+    background-color: #fafafa;
     width: 100%;
     height: 100%;
     top: 0;
-    /*border-left: 1px solid #f0f0f0;*/
     overflow-y: scroll;
     overflow-x: hidden;
     z-index: 2;
-    /*font-style: italic;*/
 }
 
 #table-of-contents-content {
-    width: 300px;
+    width: 200px;
     position: fixed;
     padding-left: 35px;
     padding-right: 35px;
@@ -238,4 +241,3 @@ input:focus {
     border: 0;
     outline: 0;
 }
-

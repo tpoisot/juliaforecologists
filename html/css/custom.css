@@ -4,7 +4,7 @@ body {
   bakground: #fcfcfc;
   color: #525252;
   font-size: 1.1em;
-  line-height: 1.1em;
+  line-height: 1.25em;
 }
 body {
   font-family: "PT Serif";
@@ -28,7 +28,19 @@ dl dd {
 #table-of-contents {
   position: fixed;
   top: 2em;
-  font-size: 0.9em;
+  font-size: 0.7em;
+}
+.toc-current-doc {
+  font-weight: bold;
+  color: #525252 !important;
+}
+.nav > li > a {
+  padding: 6px 2px;
+  color: #848484;
+}
+.nav > li > a:hover {
+  background: 0;
+  color: #525252;
 }
 pre {
   border: 0px;
@@ -58,7 +70,7 @@ code {
   background: 0;
   color: #646464;
   background: #eaeaea;
-  border-radius: 0px;
+  border-radius: 5px;
 }
 code.sourceCode span.kw {
   color: #916f9d;

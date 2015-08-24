@@ -141,13 +141,15 @@ trial ./ sum(trial)</code></pre></div>
  0.640884
  0.160221
  0.198895</code></pre>
-<p>Close! Some more timesteps?</p>
-<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">trial = lesliematrix(L, n, <span class="fl">100</span>)
-trial ./ sum(trial)</code></pre></div>
-<pre class="output"><code>3-element Array{Float64,1}:
- 0.640884
- 0.160221
- 0.198895</code></pre>
+<p>Close enough!</p>
+<h1 id="conclusions">Conclusions</h1>
+<p>Here are the key points from this chapter:</p>
+<ol type="1">
+<li>Arrays are stored as columns</li>
+<li>By default, Julia does linear algebra, not element-wise operations</li>
+<li>The <code>filter</code> function is a powerful interface to work on arrays ...</li>
+<li>... and it sometimes require anonymous functions</li>
+</ol>
         <hr>
       </div>
       </div>
@@ -189,6 +191,9 @@ trial ./ sum(trial)</code></pre></div>
             <li>
                 <a style="margin-left: 1.0em" class="toc-item" href="#stable-age-structure">Stable age-structure</a>
             </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#conclusions">Conclusions</a>
+            </li>
             </ul>
 
             <script>
@@ -209,7 +214,7 @@ trial ./ sum(trial)</code></pre></div>
     </div>
 
   <footer class="col-sm-8">
-    <p class="muted">Last modified by Timothée Poisot on dim aoû 23 23:52:15 EDT 2015. YEAH! Generated with
+    <p class="muted">Last modified by Timothée Poisot on lun aoû 24 00:01:45 EDT 2015. YEAH! Generated with
     <a href="https://github.com/dcjones/Judo.jl">Judo</a>.</p>
   </footer>
 

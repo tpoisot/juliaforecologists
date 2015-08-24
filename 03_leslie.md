@@ -215,3 +215,12 @@ trial ./ sum(trial)
 ```
 
 Close enough!
+
+# Conclusions
+
+Here are the key points from this chapter:
+
+1. Arrays are stored as columns
+2. By default, Julia does linear algebra, not element-wise operations
+3. The `filter` function is a powerful interface to work on arrays ...
+4. ... and it sometimes require anonymous functions

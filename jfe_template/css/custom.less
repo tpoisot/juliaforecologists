@@ -18,7 +18,7 @@ html, body {
   bakground: @bg;
   color: @fg;
   font-size: 1.1em;
-  line-height: 1.1em;
+  line-height: 1.25em;
 }
 
 // Fonts
@@ -47,7 +47,22 @@ dl {
 #table-of-contents {
   position: fixed;
   top: 2em;
-  font-size: 0.9em;
+  font-size: 0.7em;
+}
+
+.toc-current-doc {
+  font-weight: bold;
+  color: @fg !important;
+  text-transform: uppercase;
+}
+
+.nav > li > a {
+  padding: 6px 2px;
+  color: @dark-gray;
+  &:hover {
+    background: 0;
+    color: @fg;
+  }
 }
 
 // Code

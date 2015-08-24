@@ -18,6 +18,9 @@ More or less, an introduction to Julia, using examples from ecology. There will
 be a lot of code, covering things from dynamical models, to data analysis, to
 parallel computing.
 
+Every "chapter" can be covered in between 10 and 30 minutes, and there is no
+assumption that they are going to be read in order.
+
 # List of chapters
 
 [1][ch1] A Julia primer
@@ -33,6 +36,6 @@ present the declaration of functions, loops, and accessing parts of arrays.
 abilities of Julia.
 
 
-[ch1]: html/01_primer.html
-[ch2]: html/02_competition.html
-[ch3]: html/03_leslie.html
+[ch1]: 01_primer.html
+[ch2]: 02_competition.html
+[ch3]: 03_leslie.html

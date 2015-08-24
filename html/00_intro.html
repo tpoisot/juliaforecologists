@@ -3,12 +3,13 @@
 <head>
   <meta name="author" content="Timothée Poisot">
   <meta charset="utf-8">
-  <title>Julia for ecologists</title>
+  <title>Julia for ecologists :: Julia for ecologists</title>
   <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
   <link href="css/custom.css" rel="stylesheet" type="text/css" media="all">
   <script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
   <script src="js/bootstrap.min.js" type="text/javascript"></script>
   <script src="js/list.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
   <div id="topbar" style="z-index: 3">
@@ -28,16 +29,20 @@
       <div class="col-sm-9">
       <div id="body-content">
 <h1 id="why-julia">Why Julia?</h1>
-<p>The <a href="julia">Julia</a> programming language is a new initiative to provide an efficient, easy to write, high-performance language for users of computing environments. Julia is simple to learn, easy to write, and runs extremely fast.</p>
+<p>The <a href="http://julialang.org/">Julia</a> programming language is a new initiative to provide an efficient, easy to write, high-performance language for users of computing environments. Julia is simple to learn, easy to write, and runs extremely fast.</p>
 <h1 id="what-will-i-find-here">What will I find here?</h1>
 <p>More or less, an introduction to Julia, using examples from ecology. There will be a lot of code, covering things from dynamical models, to data analysis, to parallel computing.</p>
+<p>Every &quot;chapter&quot; can be covered in between 10 and 30 minutes, and there is no assumption that they are going to be read in order.</p>
 <h1 id="list-of-chapters">List of chapters</h1>
 <dl>
-<dt><a href="ch1">1</a> A Julia primer</dt>
+<dt><a href="01_primer.html">1</a> A Julia primer</dt>
 <dd>This chapter is a general purpose introduction to both the Julia language, and some of the writing conventions in this document.
 </dd>
-<dt><a href="ch2">2</a> Models of competition</dt>
+<dt><a href="02_competition.html">2</a> Models of competition</dt>
 <dd>This chapter uses models of intraspecific and interspecific competitions to present the declaration of functions, loops, and accessing parts of arrays.
+</dd>
+<dt><a href="03_leslie.html">3</a> Leslie matrices</dt>
+<dd>This chapters uses Leslie matrices to present some of the linear algebra abilities of Julia.
 </dd>
 </dl>
         <hr>
@@ -80,7 +85,7 @@
     </div>
 
   <footer class="col-sm-8">
-    <p class="muted">Last modified by Timothée Poisot on dim aoû 23 22:40:58 EDT 2015. YEAH! Generated with
+    <p class="muted">Last modified by Timothée Poisot on dim aoû 23 23:52:49 EDT 2015. YEAH! Generated with
     <a href="https://github.com/dcjones/Judo.jl">Judo</a>.</p>
   </footer>
 

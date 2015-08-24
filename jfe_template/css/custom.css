@@ -15,7 +15,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "PT Serif Caption";
+  font-family: "PT Serif";
 }
 dl {
   margin-top: 2em;
@@ -46,7 +46,7 @@ pre.output {
   line-height: 1.5em;
   margin-top: 2em;
   margin-bottom: 2em;
-  font-family: "PT Mono";
+  font-family: "PT Mono", "Consolas", "DejaVu Sans Mono", monospace;
 }
 pre.output {
   margin-top: -2.1em;
@@ -54,8 +54,11 @@ pre.output {
   border-left: 4px solid #ebebeb;
 }
 code {
+  font-family: "PT Mono", "Consolas", "DejaVu Sans Mono", monospace;
   background: 0;
-  color: #6c6c6c;
+  color: #646464;
+  background: #eaeaea;
+  border-radius: 0px;
 }
 code.sourceCode span.kw {
   color: #916f9d;

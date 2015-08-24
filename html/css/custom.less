@@ -1,8 +1,8 @@
 @import url(http://fonts.googleapis.com/css?family=PT+Serif+Caption:400,400italic|PT+Serif:400,700,400italic,700italic|PT+Mono);
 
-@caption: "PT Serif Caption";
+@caption: "PT Serif";
 @serif: "PT Serif";
-@mono: "PT Mono";
+@mono: "PT Mono", "Consolas", "DejaVu Sans Mono", monospace;
 
 @bg: #fcfcfc;
 @fg: #525252;
@@ -76,8 +76,11 @@ pre {
 }
 
 code {
+  font-family: @mono;
   background: 0;
-  color: lighten(@fg, 10%);
+  color: lighten(@fg, 7%);
+  background: darken(@bg, 7%);
+  border-radius: 3px;
 }
 
 // Syntax highlighting

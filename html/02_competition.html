@@ -43,7 +43,6 @@
 N[<span class="fl">1</span>] = <span class="fl">1.0</span>
 <span class="kw">for</span> i = <span class="fl">2</span>:length(N)
   N[i] = N[i-<span class="fl">1</span>] + dNdt(N[i-<span class="fl">1</span>], <span class="fl">1.1</span>, <span class="fl">0.3</span>)
-  @printf <span class="st">&quot;Population size: %.4f&quot;</span> N[i]
 <span class="kw">end</span></code></pre></div>
 <p>There are a few things going on in this snippet. Let's look at them line by line.</p>
 <dl>
@@ -57,7 +56,10 @@ N[<span class="fl">1</span>] = <span class="fl">1.0</span>
 <dd>This line will start a <em>loop</em>. The variable <code>i</code> will be incremented from <code>2</code> (because we know the population size at time 1) to <code>length(N)</code> (which we know is 10, but this is safer in case we want to change the number of timesteps).
 </dd>
 <dt><code>N[i] = N[i-1] + dNdt(N[i-1], 1.1, 0.3)</code></dt>
-<dd><p>This is the core of our loop. It will look at the population state at time <code>i-1</code> (since the loop start at 2, it will first look at 1, and so on).</p>
+<dd>This is the core of our loop. It will look at the population state at time <code>i-1</code> (since the loop start at 2, it will first look at 1, and so on). This line essentially performs the operation of <em>N(t+1) = N(t) + dN(t)/dt</em>.
+</dd>
+<dt><code>end</code></dt>
+<dd>Finally, this line indicates that this is the end of the loop. Blocks in Julia are delimited by a final <code>end</code>.
 </dd>
 </dl>
 <h2 id="solving-integration-issues">Solving integration issues</h2>
@@ -105,7 +107,7 @@ N[<span class="fl">1</span>] = <span class="fl">1.0</span>
     </div>
 
   <footer class="col-sm-8">
-    <p class="muted">Last modified by Timothée Poisot on dim aoû 23 22:14:34 EDT 2015. YEAH! Generated with
+    <p class="muted">Last modified by Timothée Poisot on dim aoû 23 22:40:47 EDT 2015. YEAH! Generated with
     <a href="https://github.com/dcjones/Judo.jl">Judo</a>.</p>
   </footer>
 

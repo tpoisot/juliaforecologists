@@ -34,7 +34,6 @@ N = Array(Float64, 10)
 N[1] = 1.0
 for i = 2:length(N)
   N[i] = N[i-1] + dNdt(N[i-1], 1.1, 0.3)
-  @printf "Population size: %.4f" N[i]
 end
 ```
 
@@ -59,9 +58,13 @@ population size in `N[1]`.
 10, but this is safer in case we want to change the number of timesteps).
 
 `N[i] = N[i-1] + dNdt(N[i-1], 1.1, 0.3)`
-
 : This is the core of our loop. It will look at the population state at time
-`i-1` (since the loop start at 2, it will first look at 1, and so on).
+`i-1` (since the loop start at 2, it will first look at 1, and so on). This line
+essentially performs the operation of *N(t+1) = N(t) + dN(t)/dt*.
+
+`end`
+: Finally, this line indicates that this is the end of the loop. Blocks in Julia
+are delimited by a final `end`.
 
 ## Solving integration issues
 

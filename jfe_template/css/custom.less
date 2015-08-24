@@ -17,11 +17,8 @@
 html, body {
   bakground: @bg;
   color: @fg;
-}
-
-p {
-  font-size: 1.4em;
-  line-height: 1.4em;
+  font-size: 1.1em;
+  line-height: 1.1em;
 }
 
 // Fonts
@@ -32,6 +29,17 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: @caption;
+}
+
+// Definition lists
+
+dl {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  dd {
+    margin-left: 3em;
+    margin-bottom: 1em;
+  }
 }
 
 // Code
@@ -50,8 +58,15 @@ pre {
   }
   &.output {
     margin-top: -2.1em;
-    background: lighten(@very-light-gray, 6%);
+    z-index: 10000;
+    border-top: 1px solid @very-light-gray;
+    background: lighten(@very-light-gray, 7%);
   }
+}
+
+code {
+  background: 0;
+  color: lighten(@fg, 10%);
 }
 
 // Syntax highlighting

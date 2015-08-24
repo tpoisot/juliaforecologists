@@ -4,11 +4,8 @@
   <meta name="author" content="Timothée Poisot">
   <meta charset="utf-8">
   <title>Models of competition</title>
-  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro:400,700'
-        rel='stylesheet' type='text/css'>
   <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
   <link href="css/custom.css" rel="stylesheet" type="text/css" media="all">
-  <link href="css/hk-pyg.css" rel="stylesheet" type="text/css" media="all">
   <script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
   <script src="js/bootstrap.min.js" type="text/javascript"></script>
   <script src="js/list.min.js" type="text/javascript"></script>
@@ -28,7 +25,7 @@
 
   <div class="container" style="z-index: auto">
     <div class="row">
-      <div class="col-sm-7">
+      <div class="col-sm-8">
       <div id="body-content">
 <p>In this example, we will build simple models of competition between two species.</p>
 <h1 id="one-population">One population</h1>
@@ -46,10 +43,8 @@
 N[<span class="fl">1</span>] = <span class="fl">1.0</span>
 <span class="kw">for</span> i = <span class="fl">2</span>:length(N)
   N[i] = N[i-<span class="fl">1</span>] + dNdt(N[i-<span class="fl">1</span>], <span class="fl">1.1</span>, <span class="fl">0.3</span>)
-<span class="kw">end</span>
-minimum(N)</code></pre></div>
-<pre class="output"><code>1.0</code></pre>
-<p>Note that we <em>pre-allocate</em> the resulting array (<code>N = Array(Float64, 10)</code>). This lines creates an array of <code>10</code> elements (of the <code>Float64</code> type).</p>
+<span class="kw">end</span></code></pre></div>
+<p>Note that we <em>pre-allocate</em> the resulting array (<code>N = Array(Float64, 10)</code>). This lines creates an array of <code>10</code> elements (of the <code>Float64</code> type). Pre-allocating is recommended, since it essentially &quot;informs&quot; the compiler of how much data, and of what type, it should expect to handle. This can speed up the computation significantly.</p>
 <h2 id="solving-integration-issues">Solving integration issues</h2>
 <h1 id="two-populations">Two populations</h1>
         <hr>
@@ -95,11 +90,10 @@ minimum(N)</code></pre></div>
     </div>
 
   <footer class="col-sm-8">
-    <p class="muted">Last modified by Timothée Poisot on dim aoû 23 18:22:01 EDT 2015. Generated with
+    <p class="muted">Last modified by Timothée Poisot on dim aoû 23 21:48:54 EDT 2015. YEAH! Generated with
     <a href="https://github.com/dcjones/Judo.jl">Judo</a>.</p>
   </footer>
 
   </div>
 </body>
 </html>
-

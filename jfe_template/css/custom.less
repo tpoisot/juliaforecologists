@@ -1,0 +1,80 @@
+@import url(http://fonts.googleapis.com/css?family=PT+Serif+Caption:400,400italic|PT+Serif:400,700,400italic,700italic|PT+Mono);
+
+@caption: "PT Serif Caption";
+@serif: "PT Serif";
+@mono: "PT Mono";
+
+@bg: #fcfcfc;
+@fg: #525252;
+
+@very-light-gray: #ebebeb;
+@light-gray:      #c8c8c8;
+@dark-gray:       #848484;
+@very-dark-gray:  #626262;
+
+// General
+
+html, body {
+  bakground: @bg;
+  color: @fg;
+}
+
+p {
+  font-size: 1.4em;
+  line-height: 1.4em;
+}
+
+// Fonts
+
+body {
+  font-family: @serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: @caption;
+}
+
+// Code
+
+pre {
+  border: 0px;
+  border-radius: 0px;
+  background: 0;
+  margin: 0 0;
+  &.sourceCode, &.output {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    font-family: @mono;
+    padding: 0.5em 0.5em;
+    background: lighten(@very-light-gray, 5%);
+  }
+  &.output {
+    margin-top: -2.1em;
+    background: lighten(@very-light-gray, 6%);
+  }
+}
+
+// Syntax highlighting
+
+// Base colors
+@red:    #b95b4d;
+@orange: #d28f6e;
+@green:  #4c9a51;
+@blue:   #4476a8;
+@cyan:   #46a7a1;
+@purple: #916f9d;
+
+
+code.sourceCode span.kw { color: @purple; }
+code.sourceCode span.dt { color: @cyan; }
+code.sourceCode span.dv { color: #40a070; }
+code.sourceCode span.bn { color: #40a070; }
+code.sourceCode span.fl { color: @orange; }
+code.sourceCode span.ch { color: #4070a0; }
+code.sourceCode span.st { color: @green; }
+code.sourceCode span.co { color: @dark-gray; }
+code.sourceCode span.ot { color: #007020; }
+code.sourceCode span.al { color: red; }
+code.sourceCode span.fu { color: #06287e; }
+code.sourceCode span.re { }
+code.sourceCode span.er { color: @red; }

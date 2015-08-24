@@ -39,7 +39,9 @@ end
 
 Note that we *pre-allocate* the resulting array (`N = Array(Float64, 10)`). This
 lines creates an array of `10` elements (of the `Float64` type). Pre-allocating
-is recommended, since it essentially "informs" the
+is recommended, since it essentially "informs" the compiler of how much data,
+and of what type, it should expect to handle. This can speed up the computation
+significantly.
 
 ## Solving integration issues
 

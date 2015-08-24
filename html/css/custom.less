@@ -51,14 +51,23 @@ dl {
 }
 
 .toc-current-doc {
-  font-weight: bold;
+  font-weight: bold !important;
   color: @fg !important;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
 }
 
 .nav > li > a {
   padding: 6px 2px;
   color: @dark-gray;
+  &:hover {
+    background: 0;
+    color: @fg;
+  }
+}
+
+.nav > li.active > a {
+  padding: 6px 2px;
+  color: @very-dark-gray;
   &:hover {
     background: 0;
     color: @fg;

@@ -31,14 +31,23 @@ dl dd {
   font-size: 0.7em;
 }
 .toc-current-doc {
-  font-weight: bold;
+  font-weight: bold !important;
   color: #525252 !important;
+  text-transform: uppercase !important;
 }
 .nav > li > a {
   padding: 6px 2px;
   color: #848484;
 }
 .nav > li > a:hover {
+  background: 0;
+  color: #525252;
+}
+.nav > li.active > a {
+  padding: 6px 2px;
+  color: #626262;
+}
+.nav > li.active > a:hover {
   background: 0;
   color: #525252;
 }

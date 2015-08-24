@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="author" content="Timothée Poisot">
+  <meta charset="utf-8">
+  <title>Julia for ecologists :: Generalized Lotka-Volterra</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+  <link href="css/custom.css" rel="stylesheet" type="text/css" media="all">
+  <script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
+  <script src="js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="js/list.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+  <div id="topbar" style="z-index: 3">
+    <div class="container-fluid">
+      <div class="row">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="01_primer.html">Julia primer</a></li>
+          <li><a href="02_competition.html">Competition models</a></li>
+          <li><a href="03_leslie.html">Leslie matrices</a></li>
+          <li><a href="04_glvm.html">Generalized Lotka-Volterra</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="z-index: auto">
+    <div class="row">
+      <div class="col-sm-9">
+      <div id="body-content">
+<p>In this chapter, we will use the generalized Lotka-Volterra model to discuss how Julia code can be optimized. Most of the key elements have been covered in chapters <a href="02_competition.html">2</a> and <a href="03_leslie.html">3</a>.</p>
+<h1 id="the-generalized-lotka-volterra-model">The generalized Lotka-Volterra model</h1>
+<h2 id="model-definition">Model definition</h2>
+<p>The GLVM is a way to model interactions between an arbitrarily large number of species. At its core, it requires two elements: a community matrix <span class="math inline"><strong>A</strong></span>, and a vector of growth rates <span class="math inline"><strong>r</strong></span>. The community matrix describes the <em>per capita</em> effects of species on one another. The diagonal elements are the intra-specific competition, and the rest of the matrix is all other effects.</p>
+<!-- TODO model -->
+<h2 id="notes-on-measuring-performance">Notes on measuring performance</h2>
+<p>Before we start, a note on compilation in Julia. As mentioned in the primer, Julia is compiled <em>Just In Time</em>. It means that the first execution of <em>anything</em> will trigger the compilation, which in turn will take more time. The correct result is estimated from the subsequent run steps.</p>
+<p>We will try to wrap things up a bit, using a new macro. The comments in the code will help understand what is going on.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="co"># This next line defines a macro. A macro is a special type of function, called</span>
+<span class="co"># with a @ before its name.</span>
+<span class="kw">macro</span> benchmark(e)
+   <span class="kw">quote</span>
+      <span class="co"># We will start by running the expression once, to trigger compilation.</span>
+      eval($e)
+      <span class="co"># Then we pre-allocate the output, which at this point should be automatic!</span>
+      times = zeros(<span class="dt">Float64</span>, <span class="fl">50</span>)
+      <span class="co"># Now, we start a loop of 50 iterations</span>
+      <span class="kw">for</span> i <span class="kw">in</span> <span class="fl">1</span>:length(times)
+         <span class="co"># and during each iteration, we record the time it took to evaluate e.</span>
+         <span class="co"># The ; at the end of the line means &quot;do not show me the output of e&quot;.</span>
+         times[i] = @elapsed eval($e);
+      <span class="kw">end</span>
+      <span class="co"># And we get back the average.</span>
+      <span class="kw">return</span> mean(times)
+   <span class="kw">end</span>
+<span class="kw">end</span></code></pre></div>
+<p>Then we can test it:</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark <span class="fl">2</span> + <span class="fl">2</span></code></pre></div>
+<pre class="output"><code>1.2552e-7</code></pre>
+<p>The output is the <em>average</em> time needed, in seconds, to run this particular expression, over 50 replicate runs.</p>
+<h2 id="defining-the-testing-dataset">Defining the testing dataset</h2>
+<p>We will use a large number of species, to be able to tell whether we can improve the performance of the function.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="co"># Using const for global variables improves performance</span>
+<span class="kw">const</span> n_species = <span class="fl">1000</span>;
+<span class="kw">const</span> A = rand((n_species, n_species)) .- <span class="fl">0.5</span>;
+<span class="kw">const</span> r = rand(n_species) .+ <span class="fl">0.2</span>;
+<span class="kw">const</span> n = rand(n_species);</code></pre></div>
+<pre class="output"><code>1000-element Array{Float64,1}:
+ 0.191105 
+ 0.69246  
+ 0.520955 
+ 0.375326 
+ 0.465542 
+ 0.0823244
+ 0.217854 
+ 0.505847 
+ 0.0973608
+ 0.0468522
+ ⋮        
+ 0.934145 
+ 0.56434  
+ 0.846366 
+ 0.138368 
+ 0.856006 
+ 0.277843 
+ 0.810593 
+ 0.670675 
+ 0.83654  </code></pre>
+<p>It is unlikely that these values are going to have any sort of ecological relevance, but this is not really what this example is about.</p>
+<h1 id="first-attempt">First attempt</h1>
+<h2 id="implementation">Implementation</h2>
+<p>We will try to write the most <em>naive</em> implementation of this model possible. Using loops, creating objects, and not caring very much about efficiency. The objective is to have a baseline, and see how much we can improve on it.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="kw">function</span> glvm_1(n::<span class="dt">Array</span>{<span class="dt">Float64</span>, <span class="fl">1</span>}, r::<span class="dt">Array</span>{<span class="dt">Float64</span>, <span class="fl">1</span>}, A::<span class="dt">Array</span>{<span class="dt">Float64</span>, <span class="fl">2</span>})
+   dndt = zeros(<span class="dt">Float64</span>, length(n))
+   <span class="kw">for</span> i = <span class="fl">1</span>:length(n)
+      dndt[i] = r[i] * n[i]
+      cumulative_effect = <span class="fl">0.0</span>
+      <span class="kw">for</span> j = <span class="fl">1</span>:length(n)
+         cumulative_effect += A[i,j]*n[j]
+      <span class="kw">end</span>
+      dndt[i] += cumulative_effect * n[i]
+   <span class="kw">end</span>
+   <span class="kw">return</span> dndt
+<span class="kw">end</span></code></pre></div>
+<pre class="output"><code>glvm_1 (generic function with 1 method)</code></pre>
+<h2 id="is-it-fast">Is it fast?</h2>
+<p>Let's see.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_1(n, r ,A)</code></pre></div>
+<pre class="output"><code>0.0032991713999999993</code></pre>
+<p>Not bad. On the order of <span class="math inline">10<sup> − 3</sup></span> seconds. It's a poorly written baseline, and it's already not too bad. Remember we are talking about 1000 species.</p>
+<h1 id="second-attempt">Second attempt</h1>
+<h2 id="implementation-1">Implementation</h2>
+<p>Ideally, we could avoid the <code>dndt[i] = r[i] * n[i]</code> step, because we know how to multiply arrays element-wise. This is what we will try with this second approach.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="kw">function</span> glvm_2(n::<span class="dt">Array</span>{<span class="dt">Float64</span>, <span class="fl">1</span>}, r::<span class="dt">Array</span>{<span class="dt">Float64</span>, <span class="fl">1</span>}, A::<span class="dt">Array</span>{<span class="dt">Float64</span>, <span class="fl">2</span>})
+   dndt = n .* r
+   <span class="kw">for</span> i = <span class="fl">1</span>:length(n)
+      cumulative_effect = <span class="fl">0.0</span>
+      <span class="kw">for</span> j = <span class="fl">1</span>:length(n)
+         cumulative_effect += A[i,j]*n[j]
+      <span class="kw">end</span>
+      dndt[i] += cumulative_effect * n[i]
+   <span class="kw">end</span>
+   <span class="kw">return</span> dndt
+<span class="kw">end</span></code></pre></div>
+<pre class="output"><code>glvm_2 (generic function with 1 method)</code></pre>
+<h2 id="is-it-fast-1">Is it fast?</h2>
+<p>Let's see.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_2(n, r ,A)</code></pre></div>
+<pre class="output"><code>0.00325451226</code></pre>
+<p>How about that? It performs the same as the previous version. Almost exactly the same in fact. Well, this can mean one of two things. Either our naive interpretation was the most efficient, or we are not optimizing the right thing.</p>
+<h1 id="third-attempt">Third attempt</h1>
+<h2 id="implementation-2">Implementation</h2>
+<p>Of course, the GLVM is a linear algebra problem. So let us solve it this way.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="kw">function</span> glvm_3(n::<span class="dt">Array</span>{<span class="dt">Float64</span>, <span class="fl">1</span>}, r::<span class="dt">Array</span>{<span class="dt">Float64</span>, <span class="fl">1</span>}, A::<span class="dt">Array</span>{<span class="dt">Float64</span>, <span class="fl">2</span>})
+   <span class="kw">return</span> n .* (r - A * n)
+<span class="kw">end</span></code></pre></div>
+<pre class="output"><code>glvm_3 (generic function with 1 method)</code></pre>
+<p>This version has, in addition, the advantage of being so much more readable. Without having to read through the loops, understanding which variables are created when and what they do, this code is <em>intuitive</em>.</p>
+<h2 id="is-it-fast-2">Is it fast?</h2>
+<p>Let's see.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_3(n, r ,A)</code></pre></div>
+<pre class="output"><code>0.0004935373200000001</code></pre>
+<p><em>It's SO FAST YOU GUYS!</em></p>
+<p>Almost an order of magnitude faster than the loop-based solutions.</p>
+<h1 id="conclusions">Conclusions</h1>
+<p>Here are the key points from this chapter:</p>
+<ol type="1">
+<li>Macros can be defined to evaluate code when needed.</li>
+<li>Linear algebra is faster than using loops.</li>
+<li>Using <code>const</code> for global variables is a way to improve performance.</li>
+</ol>
+        <hr>
+      </div>
+      </div>
+
+      <div class="col-sm-offset-9" style="z-index: 2">
+        <div id="table-of-contents">
+          <div id="table-of-contents-content">
+
+            <ul class="toc list nav"><li>
+                <a class="toc-item toc-current-doc" href="04_glvm.html">Generalized Lotka-Volterra</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#the-generalized-lotka-volterra-model">The generalized Lotka-Volterra model</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#model-definition">Model definition</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#notes-on-measuring-performance">Notes on measuring performance</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#defining-the-testing-dataset">Defining the testing dataset</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#first-attempt">First attempt</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#implementation">Implementation</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#is-it-fast">Is it fast?</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#second-attempt">Second attempt</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#implementation">Implementation</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#is-it-fast">Is it fast?</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#third-attempt">Third attempt</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#implementation">Implementation</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#is-it-fast">Is it fast?</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#conclusions">Conclusions</a>
+            </li>
+            </ul>
+
+            <script>
+                var toclist = new List("table-of-contents",
+                                       {valueNames: ["toc-item"]})
+
+                $("body").scrollspy({target: "#table-of-contents"});
+
+                $("#table-of-contents li").on("activate.bs.scrollspy",
+                    function(event) {
+                        $("#table-of-contents ul").find("a").css({"font-weight": "normal"});
+                        $(this).children("a").css({"font-weight": "bolder"});
+                    });
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <footer class="col-sm-8">
+    <p class="muted">Last modified by Timothée Poisot on lun aoû 24 15:55:46 EDT 2015. Generated with
+    <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
+  </footer>
+
+  </div>
+</body>
+</html>

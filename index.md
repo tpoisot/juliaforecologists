@@ -38,7 +38,12 @@ present the declaration of functions, loops, and accessing parts of arrays.
 : This chapters uses Leslie matrices to present some of the linear algebra
 abilities of Julia.
 
+[4][ch4] Generalized Lotka-Volterra model
+: This chapters will use some points from chapter 2 and 3, to discuss how to
+make Julia code *fast*, and how to declare macros.
+
 
 [ch1]: 01_primer.html
 [ch2]: 02_competition.html
 [ch3]: 03_leslie.html
+[ch4]: 04_glvm.html

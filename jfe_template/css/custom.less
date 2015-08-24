@@ -1,9 +1,8 @@
-@import url(http://fonts.googleapis.com/css?family=Gentium+Basic:400,400italic,700,700italic);
-@import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:400,400italic,700,700italic);
+@import url(https://fonts.googleapis.com/css?family=Alegreya:400,400italic,700,700italic|Alegreya+Sans:400,400italic,700,700italic);
 @import url(http://fonts.googleapis.com/css?family=Cousine:400,400italic,700,700italic);
 
-@caption: "Gentium Book Basic";
-@serif: "Gentium Basic";
+@caption: "Alegreya Sans";
+@serif: "Alegreya";
 @mono: "Cousine", "Consolas", "DejaVu Sans Mono", monospace;
 
 @bg: #fcfcfc;
@@ -27,8 +26,8 @@
 html, body {
   bakground-color: @bg;
   color: @fg;
-  font-size: 1.1em;
-  line-height: 1.35em;
+  font-size: 1.2em;
+  line-height: 1.45em;
 }
 
 // Fonts
@@ -39,6 +38,18 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: @caption;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 28px;
+  margin-top: 4em;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 2em;
 }
 
 // Tables
@@ -75,7 +86,7 @@ dl {
   font-family: @caption;
   position: fixed;
   bottom: 2em;
-  font-size: 0.7em;
+  font-size: 0.6em;
   z-index: 1000;
 }
 
@@ -110,7 +121,7 @@ dl {
 // topbar
 
 #topbar {
-  min-width: 47.65px;
+  min-width: 46.65px;
   position: fixed;
   min-width: 100%;
   .container-fluid {
@@ -133,10 +144,19 @@ dl {
       font-weight: bold;
       font-variant: small-caps;
       text-transform: lowercase;
-      font-size: 80%;
+      font-size: 60%;
       color: @very-light-gray;
     }
   }
+}
+
+// Footer
+
+footer {
+  padding: 0px 0px;
+  color: @dark-gray;
+  font-size: 0.7em;
+  line-height: 1.0em;
 }
 
 // Code

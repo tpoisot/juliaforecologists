@@ -1,7 +1,7 @@
 jver = 0.3
 judo = ~/.julia/v$(jver)/Judo/bin/judo
 jexe = julia
-outf = html
+outf = dist
 
 SOURCES=$(wildcard *.md)
 PAGES=$(patsubst %.md,html/%.html,$(SOURCES))

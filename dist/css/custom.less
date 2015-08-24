@@ -1,11 +1,21 @@
-@import url(http://fonts.googleapis.com/css?family=PT+Serif+Caption:400,400italic|PT+Serif:400,700,400italic,700italic|PT+Mono);
+@import url(http://fonts.googleapis.com/css?family=Gentium+Basic:400,400italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:400,400italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Cousine:400,400italic,700,700italic);
 
-@caption: "PT Serif";
-@serif: "PT Serif";
-@mono: "PT Mono", "Consolas", "DejaVu Sans Mono", monospace;
+@caption: "Gentium Book Basic";
+@serif: "Gentium Basic";
+@mono: "Cousine", "Consolas", "DejaVu Sans Mono", monospace;
 
 @bg: #fcfcfc;
 @fg: #525252;
+
+// Base colors
+@red:    #b95b4d;
+@orange: #d28f6e;
+@green:  #4c9a51;
+@blue:   #4476a8;
+@cyan:   #46a7a1;
+@purple: #916f9d;
 
 @very-light-gray: #ebebeb;
 @light-gray:      #c8c8c8;
@@ -15,10 +25,10 @@
 // General
 
 html, body {
-  bakground: @bg;
+  bakground-color: @bg;
   color: @fg;
   font-size: 1.1em;
-  line-height: 1.25em;
+  line-height: 1.35em;
 }
 
 // Fonts
@@ -29,6 +39,23 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: @caption;
+}
+
+// Tables
+// TODO style tables
+
+// Links
+
+#body-content {
+  a {
+    text-decoration: underline;
+    text-decoration-color: @light-gray;
+    color: @very-dark-gray;
+    &:hover {
+      color: @fg;
+      text-decoration-color: @green;
+    }
+  }
 }
 
 // Definition lists
@@ -45,9 +72,15 @@ dl {
 // Contents
 
 #table-of-contents {
+  font-family: @caption;
   position: fixed;
-  top: 2em;
+  bottom: 2em;
   font-size: 0.7em;
+  z-index: 1000;
+}
+
+#body-content {
+  padding-top: 5em;
 }
 
 .toc-current-doc {
@@ -57,7 +90,7 @@ dl {
 }
 
 .nav > li > a {
-  padding: 6px 2px;
+  padding: 3px 1px;
   color: @dark-gray;
   &:hover {
     background: 0;
@@ -66,11 +99,43 @@ dl {
 }
 
 .nav > li.active > a {
-  padding: 6px 2px;
+  padding: 3px 1px;
   color: @very-dark-gray;
   &:hover {
     background: 0;
     color: @fg;
+  }
+}
+
+// topbar
+
+#topbar {
+  min-width: 47.65px;
+  position: fixed;
+  min-width: 100%;
+  .container-fluid {
+    background-color: @very-dark-gray;
+    border-bottom: 1px solid @very-light-gray;
+    z-index: 1000;
+  }
+  ul {
+    padding: 0 0;
+    margin: 2px 1em;
+  }
+  ul, li {
+    list-style: none;
+  }
+  li {
+    display: inline-block;
+    padding: 8px 8px;
+    a {
+      font-family: @caption;
+      font-weight: bold;
+      font-variant: small-caps;
+      text-transform: lowercase;
+      font-size: 80%;
+      color: @very-light-gray;
+    }
   }
 }
 
@@ -108,15 +173,6 @@ code {
 }
 
 // Syntax highlighting
-
-// Base colors
-@red:    #b95b4d;
-@orange: #d28f6e;
-@green:  #4c9a51;
-@blue:   #4476a8;
-@cyan:   #46a7a1;
-@purple: #916f9d;
-
 
 code.sourceCode span.kw { color: @purple; }
 code.sourceCode span.dt { color: @cyan; }

@@ -1,13 +1,15 @@
-@import url(http://fonts.googleapis.com/css?family=PT+Serif+Caption:400,400italic|PT+Serif:400,700,400italic,700italic|PT+Mono);
+@import url(http://fonts.googleapis.com/css?family=Gentium+Basic:400,400italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:400,400italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Cousine:400,400italic,700,700italic);
 html,
 body {
-  bakground: #fcfcfc;
+  bakground-color: #fcfcfc;
   color: #525252;
   font-size: 1.1em;
-  line-height: 1.25em;
+  line-height: 1.35em;
 }
 body {
-  font-family: "PT Serif";
+  font-family: "Gentium Basic";
 }
 h1,
 h2,
@@ -15,7 +17,16 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "PT Serif";
+  font-family: "Gentium Book Basic";
+}
+#body-content a {
+  text-decoration: underline;
+  text-decoration-color: #c8c8c8;
+  color: #626262;
+}
+#body-content a:hover {
+  color: #525252;
+  text-decoration-color: #4c9a51;
 }
 dl {
   margin-top: 2em;
@@ -26,9 +37,14 @@ dl dd {
   margin-bottom: 1em;
 }
 #table-of-contents {
+  font-family: "Gentium Book Basic";
   position: fixed;
-  top: 2em;
+  bottom: 2em;
   font-size: 0.7em;
+  z-index: 1000;
+}
+#body-content {
+  padding-top: 5em;
 }
 .toc-current-doc {
   font-weight: bold !important;
@@ -36,7 +52,7 @@ dl dd {
   text-transform: uppercase !important;
 }
 .nav > li > a {
-  padding: 6px 2px;
+  padding: 3px 1px;
   color: #848484;
 }
 .nav > li > a:hover {
@@ -44,12 +60,42 @@ dl dd {
   color: #525252;
 }
 .nav > li.active > a {
-  padding: 6px 2px;
+  padding: 3px 1px;
   color: #626262;
 }
 .nav > li.active > a:hover {
   background: 0;
   color: #525252;
+}
+#topbar {
+  min-width: 47.65px;
+  position: fixed;
+  min-width: 100%;
+}
+#topbar .container-fluid {
+  background-color: #626262;
+  border-bottom: 1px solid #ebebeb;
+  z-index: 1000;
+}
+#topbar ul {
+  padding: 0 0;
+  margin: 2px 1em;
+}
+#topbar ul,
+#topbar li {
+  list-style: none;
+}
+#topbar li {
+  display: inline-block;
+  padding: 8px 8px;
+}
+#topbar li a {
+  font-family: "Gentium Book Basic";
+  font-weight: bold;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  font-size: 80%;
+  color: #ebebeb;
 }
 pre {
   border: 0px;
@@ -67,7 +113,7 @@ pre.output {
   line-height: 1.5em;
   margin-top: 2em;
   margin-bottom: 2em;
-  font-family: "PT Mono", "Consolas", "DejaVu Sans Mono", monospace;
+  font-family: "Cousine", "Consolas", "DejaVu Sans Mono", monospace;
 }
 pre.output {
   margin-top: -2.1em;
@@ -75,7 +121,7 @@ pre.output {
   border-left: 4px solid #ebebeb;
 }
 code {
-  font-family: "PT Mono", "Consolas", "DejaVu Sans Mono", monospace;
+  font-family: "Cousine", "Consolas", "DejaVu Sans Mono", monospace;
   background: 0;
   color: #646464;
   background: #eaeaea;

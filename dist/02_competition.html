@@ -13,12 +13,13 @@
 </head>
 <body>
   <div id="topbar" style="z-index: 3">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
         <ul>
-          <li><div id="pkgname"> </div></li>
-          <li><a href="">Code</a></li>
-          <li><a href="/issues">Issues</a></li>
+          <li><a href="00_intro.html">Home</a></li>
+          <li><a href="01_primer.html">Julia primer</a></li>
+          <li><a href="02_competition.html">Competition models</a></li>
+          <li><a href="03_leslie.html">Leslie matrices</a></li>
         </ul>
       </div>
     </div>
@@ -28,14 +29,19 @@
     <div class="row">
       <div class="col-sm-9">
       <div id="body-content">
-<p>In this example, we will build simple models of competition between two species.</p>
+<p>In this example, we will build simple models of competition between two species. We will start from a single-population model, and add some complexity.</p>
 <h1 id="one-population">One population</h1>
 <p>Let us first define a function for logistic growth. This function will return the growth rate of a population of size <code>N</code> as a function of its growth rate <code>r</code> and intraspecific competition rate <code>q</code>.</p>
+<h2 id="defining-the-model">Defining the model</h2>
+<p>The mathematical expression of this model is</p>
+<p><br /><span class="math display">$$
+\frac{1}{N}\frac{dN}{dt} = r - qN
+$$</span><br /></p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="kw">function</span> dNdt(N::<span class="dt">Float64</span>, r::<span class="dt">Float64</span>, q::<span class="dt">Float64</span>)
   <span class="kw">return</span> N * (r - q * N)
 <span class="kw">end</span></code></pre></div>
 <pre class="output"><code>dNdt (generic function with 1 method)</code></pre>
-<h2 id="testing-the-model">Testing the model</h2>
+<h2 id="running-the-model">Running the model</h2>
 <p>How much would a population of size 1 grow over a single timestep, if there is no intraspecific competition at all?</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">dNdt(<span class="fl">1.0</span>, <span class="fl">1.1</span>, <span class="fl">0.0</span>)</code></pre></div>
 <pre class="output"><code>1.1</code></pre>
@@ -63,8 +69,37 @@ N[<span class="fl">1</span>] = <span class="fl">1.0</span>
 <dd>Finally, this line indicates that this is the end of the loop. Blocks in Julia are delimited by a final <code>end</code>.
 </dd>
 </dl>
-<h2 id="solving-integration-issues">Solving integration issues</h2>
+<h1 id="solving-integration-issues">Solving integration issues</h1>
+<p>This approach is what is known as <em>Euler</em> integration with a step size of 1, <em>i.e.</em> the derivative <span class="math inline"><em>d</em><em>N</em>/<em>d</em><em>t</em></span> is simply added to <span class="math inline"><em>N</em></span>. This gives rises to all sorts of behavior very technical described as &quot;funky&quot;; we want to avoid them, and this require a numerical integration scheme.</p>
+<p>We will go for an easy to implement method: the midpoint method. Let us call <span class="math inline"><em>f</em></span> the derivative, and <span class="math inline"><em>y</em></span> the quantity of interest.</p>
+<p><br /><span class="math display">$$
+y_{t+1} = y_{t} + h \times f\left(y_{t} + \frac{h}{2}f(y_{t})\right)
+$$</span><br /></p>
+<p>This can be implemented in Julia:</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="kw">function</span> midpoint(f::<span class="dt">Function</span>)
+  dxdt = (x) -&gt; f(x+(<span class="fl">1.0</span>/<span class="fl">2.0</span>)*f(x))
+  <span class="kw">return</span> dxdt
+<span class="kw">end</span></code></pre></div>
+<pre class="output"><code>midpoint (generic function with 1 method)</code></pre>
+<p>Wait, what? Yes, this returns a function, as opposed to performing the actual operation. But fear not, for this makes no difference in the way you use it. Let me demonstrate:</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">our_problem = (x) -&gt; dNdt(x, <span class="fl">1.1</span>, <span class="fl">0.3</span>)
+n0 = <span class="fl">2.0</span>
+midpoint(our_problem)</code></pre></div>
+<pre class="output"><code>(anonymous function)</code></pre>
+<p>See, this returns a function. We can use it in any way we want:</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">n0 + midpoint(our_problem)(n0)</code></pre></div>
+<pre class="output"><code>2.875</code></pre>
+<p>Compare this to the other solution:</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">n0 + our_problem(n0)</code></pre></div>
+<pre class="output"><code>3.0</code></pre>
+<p>There are actually other, more elegant or more efficient, solutions to this particular problem. Yet this solution efficiently demonstrate how you can use functions to build other functions. The advantage of using as much functions as you can is that they are re-usable (if we define a new <code>our_problem</code> function, this approach will work just as well), and optimized by Julia's compiler.</p>
 <h1 id="two-populations">Two populations</h1>
+<h1 id="conclusions">Conclusions</h1>
+<p>Here are the key points from this chapter:</p>
+<ol type="1">
+<li>Functions should be the basis of most, if not all, code.</li>
+<li>Functions can return other functions.</li>
+</ol>
         <hr>
       </div>
       </div>
@@ -80,13 +115,19 @@ N[<span class="fl">1</span>] = <span class="fl">1.0</span>
                 <a style="margin-left: 0.5em" class="toc-item" href="#one-population">One population</a>
             </li>
             <li>
-                <a style="margin-left: 1.0em" class="toc-item" href="#testing-the-model">Testing the model</a>
+                <a style="margin-left: 1.0em" class="toc-item" href="#defining-the-model">Defining the model</a>
             </li>
             <li>
-                <a style="margin-left: 1.0em" class="toc-item" href="#solving-integration-issues">Solving integration issues</a>
+                <a style="margin-left: 1.0em" class="toc-item" href="#running-the-model">Running the model</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#solving-integration-issues">Solving integration issues</a>
             </li>
             <li>
                 <a style="margin-left: 0.5em" class="toc-item" href="#two-populations">Two populations</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#conclusions">Conclusions</a>
             </li>
             </ul>
 
@@ -108,7 +149,7 @@ N[<span class="fl">1</span>] = <span class="fl">1.0</span>
     </div>
 
   <footer class="col-sm-8">
-    <p class="muted">Last modified by Timothée Poisot on lun aoû 24 00:03:54 EDT 2015. YEAH! Generated with
+    <p class="muted">Last modified by Timothée Poisot on lun aoû 24 13:27:45 EDT 2015. YEAH! Generated with
     <a href="https://github.com/dcjones/Judo.jl">Judo</a>.</p>
   </footer>
 

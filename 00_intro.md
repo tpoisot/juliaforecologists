@@ -23,6 +23,9 @@ assumption that they are going to be read in order.
 
 # List of chapters
 
+At all times, these chapters can be accessed from the navigation bar at the top
+of the page.
+
 [1][ch1] A Julia primer
 : This chapter is a general purpose introduction to both the Julia language, and
 some of the writing conventions in this document.

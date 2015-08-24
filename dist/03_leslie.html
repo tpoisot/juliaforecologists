@@ -16,7 +16,7 @@
     <div class="container-fluid">
       <div class="row">
         <ul>
-          <li><a href="00_intro.html">Home</a></li>
+          <li><a href="index.html">Home</a></li>
           <li><a href="01_primer.html">Julia primer</a></li>
           <li><a href="02_competition.html">Competition models</a></li>
           <li><a href="03_leslie.html">Leslie matrices</a></li>
@@ -90,7 +90,7 @@ $$</span><br /></p>
 <span class="kw">end</span>
 lesliematrix(L, n, <span class="fl">10</span>) <span class="co"># Age structure after 10 timesteps</span></code></pre></div>
 <pre class="output"><code>3-element Array{Float64,1}:
- 252.041 
+ 252.041
   63.0102
   78.2196</code></pre>
 <p>Why, you ask, go through the trouble of writing a function for a single operation? It is because Julia is a compiled language, and one that is great at compiling functions to make the <em>fast</em>. The same set of instructions written as functions can be orders of magnitude faster than the same code written without functions. Functions are also re-usable, testable, and tidier to read.</p>
@@ -100,7 +100,7 @@ lesliematrix(L, n, <span class="fl">10</span>) <span class="co"># Age structure 
 <p>In Julia, we can get the eigenvalues of a (square) matrix using (the <code>real</code> function works on the real parts, and <code>imag</code> on the imaginary):</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">Λ = real(eigvals(L))</code></pre></div>
 <pre class="output"><code>3-element Array{Float64,1}:
-  0.0    
+  0.0
   1.07703
  -1.07703</code></pre>
 <p>This is a good time to mention that Julia uses UTF-8 to encode characters, so it is perfectly acceptable to use Greek letters (and a variety of other symbols). Julia uses LaTeX symbol codes, so to write λ, you need to write <code>\lambda</code> then press Tab.</p>
@@ -215,7 +215,7 @@ trial ./ sum(trial)</code></pre></div>
     </div>
 
   <footer class="col-sm-8">
-    <p class="muted">Last modified by Timothée Poisot on lun aoû 24 13:39:59 EDT 2015. YEAH! Generated with
+    <p class="muted">Last modified by Timothée Poisot on lun aoû 24 13:48:37 EDT 2015. YEAH! Generated with
     <a href="https://github.com/dcjones/Judo.jl">Judo</a>.</p>
   </footer>
 

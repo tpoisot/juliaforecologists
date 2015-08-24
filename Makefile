@@ -28,3 +28,4 @@ $(judo):
 
 pages:
 	git subtree push --prefix $(outf) origin gh-pages
+	git push origin master

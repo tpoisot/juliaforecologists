@@ -25,3 +25,6 @@ jfe_template/css/custom.css: jfe_template/css/custom.less
 
 $(judo):
 	$(jexe) -e 'Pkg.clone("https://github.com/dcjones/Judo.jl.git");'
+
+pages:
+	git subtree push --prefix dist origin gh-pages

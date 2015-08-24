@@ -54,21 +54,23 @@ dl {
 
 pre {
   border: 0px;
+  border-left: 4px solid @light-gray;
   border-radius: 0px;
   background: 0;
   margin: 0 0;
+  padding: 8px;
+  margin-left: -17px;
+  padding-left: 13px;
   &.sourceCode, &.output {
+    font-size: 105%;
     margin-top: 2em;
     margin-bottom: 2em;
     font-family: @mono;
-    padding: 0.5em 0.5em;
-    background: lighten(@very-light-gray, 5%);
   }
   &.output {
     margin-top: -2.1em;
     z-index: 10000;
-    border-top: 1px solid @very-light-gray;
-    background: lighten(@very-light-gray, 7%);
+    border-left: 4px solid @very-light-gray;
   }
 }
 

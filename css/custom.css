@@ -1,15 +1,14 @@
-@import url(http://fonts.googleapis.com/css?family=Gentium+Basic:400,400italic,700,700italic);
-@import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:400,400italic,700,700italic);
+@import url(https://fonts.googleapis.com/css?family=Alegreya:400,400italic,700,700italic|Alegreya+Sans:400,400italic,700,700italic);
 @import url(http://fonts.googleapis.com/css?family=Cousine:400,400italic,700,700italic);
 html,
 body {
   bakground-color: #fcfcfc;
   color: #525252;
-  font-size: 1.1em;
-  line-height: 1.35em;
+  font-size: 1.2em;
+  line-height: 1.45em;
 }
 body {
-  font-family: "Gentium Basic";
+  font-family: "Alegreya";
 }
 h1,
 h2,
@@ -17,7 +16,17 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Gentium Book Basic";
+  font-family: "Alegreya Sans";
+}
+h1 {
+  font-weight: bold;
+  font-size: 28px;
+  margin-top: 4em;
+}
+h2 {
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 2em;
 }
 #body-content a {
   text-decoration: underline;
@@ -37,10 +46,10 @@ dl dd {
   margin-bottom: 1em;
 }
 #table-of-contents {
-  font-family: "Gentium Book Basic";
+  font-family: "Alegreya Sans";
   position: fixed;
   bottom: 2em;
-  font-size: 0.7em;
+  font-size: 0.6em;
   z-index: 1000;
 }
 #body-content {
@@ -68,7 +77,7 @@ dl dd {
   color: #525252;
 }
 #topbar {
-  min-width: 47.65px;
+  min-width: 46.65px;
   position: fixed;
   min-width: 100%;
 }
@@ -90,12 +99,18 @@ dl dd {
   padding: 8px 8px;
 }
 #topbar li a {
-  font-family: "Gentium Book Basic";
+  font-family: "Alegreya Sans";
   font-weight: bold;
   font-variant: small-caps;
   text-transform: lowercase;
-  font-size: 80%;
+  font-size: 60%;
   color: #ebebeb;
+}
+footer {
+  padding: 0px 0px;
+  color: #848484;
+  font-size: 0.7em;
+  line-height: 1.0em;
 }
 pre {
   border: 0px;

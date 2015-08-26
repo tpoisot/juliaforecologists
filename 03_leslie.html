@@ -29,6 +29,65 @@
 
   <div class="container" style="z-index: auto">
     <div class="row">
+
+      <div class="col-sm-3" style="z-index: 2">
+        <div id="table-of-contents">
+          <div id="table-of-contents-content">
+
+            <ul class="toc list nav"><li>
+                <a class="toc-item toc-current-doc" href="03_leslie.html">Leslie matrices</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#setting-up-our-example">Setting up our example</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#implementing-the-model">Implementing the model</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#transition-matrix">Transition matrix</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#population">Population</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#running-the-model">Running the model</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#single-timestep">Single timestep</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#several-timesteps">Several timesteps</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#making-predictions">Making predictions</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#asymptotic-growth-rate">Asymptotic growth rate</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#stable-age-structure">Stable age-structure</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#conclusions">Conclusions</a>
+            </li>
+            </ul>
+
+            <script>
+                var toclist = new List("table-of-contents",
+                                       {valueNames: ["toc-item"]})
+
+                $("body").scrollspy({target: "#table-of-contents"});
+
+                $("#table-of-contents li").on("activate.bs.scrollspy",
+                    function(event) {
+                        $("#table-of-contents ul").find("a").css({"font-weight": "normal"});
+                        $(this).children("a").css({"font-weight": "bolder"});
+                    });
+            </script>
+          </div>
+        </div>
+      </div>
+
       <div class="col-sm-9">
       <div id="body-content">
 <p>A Leslie matrix is a way to represent the dynamics of a structured population. For example, a population in which individuals are juveniles, adults, then old, can be represented with three classes. The demographically relevant parameters are the rate of transition between each of them. We will use Leslie matrices to present some of Julia's linear algebra facilities.</p>
@@ -153,73 +212,18 @@ trial ./ sum(trial)</code></pre></div>
 <li>The <code>filter</code> function is a powerful interface to work on arrays ...</li>
 <li>... and it sometimes require anonymous functions</li>
 </ol>
+<div class="footer">
+  <p class="muted">Last modified by Timothée Poisot on mer aoû 26 14:06:52 EDT 2015. Generated with
+  <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
+</div>
         <hr>
       </div>
       </div>
 
-      <div class="col-sm-offset-9" style="z-index: 2">
-        <div id="table-of-contents">
-          <div id="table-of-contents-content">
 
-            <ul class="toc list nav"><li>
-                <a class="toc-item toc-current-doc" href="03_leslie.html">Leslie matrices</a>
-            </li>
-            <li>
-                <a style="margin-left: 0.5em" class="toc-item" href="#setting-up-our-example">Setting up our example</a>
-            </li>
-            <li>
-                <a style="margin-left: 0.5em" class="toc-item" href="#implementing-the-model">Implementing the model</a>
-            </li>
-            <li>
-                <a style="margin-left: 1.0em" class="toc-item" href="#transition-matrix">Transition matrix</a>
-            </li>
-            <li>
-                <a style="margin-left: 1.0em" class="toc-item" href="#population">Population</a>
-            </li>
-            <li>
-                <a style="margin-left: 0.5em" class="toc-item" href="#running-the-model">Running the model</a>
-            </li>
-            <li>
-                <a style="margin-left: 1.0em" class="toc-item" href="#single-timestep">Single timestep</a>
-            </li>
-            <li>
-                <a style="margin-left: 1.0em" class="toc-item" href="#several-timesteps">Several timesteps</a>
-            </li>
-            <li>
-                <a style="margin-left: 0.5em" class="toc-item" href="#making-predictions">Making predictions</a>
-            </li>
-            <li>
-                <a style="margin-left: 1.0em" class="toc-item" href="#asymptotic-growth-rate">Asymptotic growth rate</a>
-            </li>
-            <li>
-                <a style="margin-left: 1.0em" class="toc-item" href="#stable-age-structure">Stable age-structure</a>
-            </li>
-            <li>
-                <a style="margin-left: 0.5em" class="toc-item" href="#conclusions">Conclusions</a>
-            </li>
-            </ul>
-
-            <script>
-                var toclist = new List("table-of-contents",
-                                       {valueNames: ["toc-item"]})
-
-                $("body").scrollspy({target: "#table-of-contents"});
-
-                $("#table-of-contents li").on("activate.bs.scrollspy",
-                    function(event) {
-                        $("#table-of-contents ul").find("a").css({"font-weight": "normal"});
-                        $(this).children("a").css({"font-weight": "bolder"});
-                    });
-            </script>
-          </div>
-        </div>
-      </div>
     </div>
 
-  <footer class="col-sm-8">
-    <p class="muted">Last modified by Timothée Poisot on mer aoû 26 12:43:26 EDT 2015. Generated with
-    <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
-  </footer>
+
 
   </div>
 </body>

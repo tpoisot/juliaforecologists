@@ -59,7 +59,7 @@
 <span class="kw">end</span></code></pre></div>
 <p>Then we can test it:</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark <span class="fl">2</span> + <span class="fl">2</span></code></pre></div>
-<pre class="output"><code>1.1224000000000002e-7</code></pre>
+<pre class="output"><code>1.1164000000000001e-7</code></pre>
 <p>The output is the <em>average</em> time needed, in seconds, to run this particular expression, over 50 replicate runs.</p>
 <h2 id="defining-the-testing-dataset">Defining the testing dataset</h2>
 <p>We will use a large number of species, to be able to tell whether we can improve the performance of the function.</p>
@@ -69,26 +69,26 @@
 <span class="kw">const</span> r = rand(n_species) .+ <span class="fl">0.2</span>;
 <span class="kw">const</span> n = rand(n_species);</code></pre></div>
 <pre class="output"><code>1000-element Array{Float64,1}:
- 0.0881198 
- 0.00908219
- 0.582114  
- 0.0911824 
- 0.196338  
- 0.208473  
- 0.231724  
- 0.690265  
- 0.623397  
- 0.289453  
- ⋮         
- 0.720608  
- 0.966733  
- 0.0421746 
- 0.383834  
- 0.710729  
- 0.703849  
- 0.97503   
- 0.748872  
- 0.345437  </code></pre>
+ 0.589374 
+ 0.269405 
+ 0.434654 
+ 0.919816 
+ 0.0452117
+ 0.73765  
+ 0.740902 
+ 0.592177 
+ 0.129088 
+ 0.286886 
+ ⋮        
+ 0.886462 
+ 0.0932444
+ 0.940222 
+ 0.519269 
+ 0.306006 
+ 0.57386  
+ 0.274153 
+ 0.318387 
+ 0.0925501</code></pre>
 <p>It is unlikely that these values are going to have any sort of ecological relevance, but this is not really what this example is about.</p>
 <h1 id="first-attempt">First attempt</h1>
 <h2 id="implementation">Implementation</h2>
@@ -109,7 +109,7 @@
 <h2 id="is-it-fast">Is it fast?</h2>
 <p>Let's see.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_1(n, r ,A)</code></pre></div>
-<pre class="output"><code>0.0032087006199999994</code></pre>
+<pre class="output"><code>0.0036876923399999993</code></pre>
 <p>Not bad. On the order of <span class="math inline">10<sup> − 3</sup></span> seconds. It's a poorly written baseline, and it's already not too bad. Remember we are talking about 1000 species.</p>
 <h1 id="second-attempt">Second attempt</h1>
 <h2 id="implementation-1">Implementation</h2>
@@ -129,7 +129,7 @@
 <h2 id="is-it-fast-1">Is it fast?</h2>
 <p>Let's see.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_2(n, r ,A)</code></pre></div>
-<pre class="output"><code>0.0044072659</code></pre>
+<pre class="output"><code>0.00328885568</code></pre>
 <p>How about that? It performs the same as the previous version. Almost exactly the same in fact. Well, this can mean one of two things. Either our naive interpretation was the most efficient, or we are not optimizing the right thing.</p>
 <h1 id="third-attempt">Third attempt</h1>
 <h2 id="implementation-2">Implementation</h2>
@@ -142,7 +142,7 @@
 <h2 id="is-it-fast-2">Is it fast?</h2>
 <p>Let's see.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_3(n, r ,A)</code></pre></div>
-<pre class="output"><code>0.0005597213199999999</code></pre>
+<pre class="output"><code>0.00078333182</code></pre>
 <p><em>It's SO FAST YOU GUYS!</em></p>
 <p>Almost an order of magnitude faster than the loop-based solutions.</p>
 <h1 id="conclusions">Conclusions</h1>
@@ -225,7 +225,7 @@
     </div>
 
   <footer class="col-sm-8">
-    <p class="muted">Last modified by Timothée Poisot on mer aoû 26 12:36:36 EDT 2015. Generated with
+    <p class="muted">Last modified by Timothée Poisot on mer aoû 26 12:44:20 EDT 2015. Generated with
     <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
   </footer>
 

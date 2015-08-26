@@ -1,14 +1,28 @@
-@import url(https://fonts.googleapis.com/css?family=Alegreya:400,400italic,700,700italic|Alegreya+Sans:400,400italic,700,700italic);
-@import url(http://fonts.googleapis.com/css?family=Cousine:400,400italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic|Roboto+Condensed:400,400italic,700,700italic,300,300italic|Roboto+Mono:400,400italic,500,500italic&subset=latin,greek);
 html,
 body {
-  bakground-color: #fcfcfc;
-  color: #525252;
-  font-size: 1.2em;
-  line-height: 1.45em;
+  bakground-color: #fafafa;
+  color: #424242;
+  font-size: 1.1em;
+  line-height: 1.55em;
+  height: 100%;
+  min-height: 100%;
+}
+.container {
+  height: auto;
+  min-height: 100%;
+  background-color: #464646;
+}
+.sidebar {
+  background-color: #464646;
+  height: 100%;
+  min-height: 100%;
+}
+.content {
+  background-color: #fafafa;
 }
 body {
-  font-family: "Alegreya";
+  font-family: "Roboto";
 }
 h1,
 h2,
@@ -16,7 +30,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Alegreya Sans";
+  font-family: "Roboto Condensed";
 }
 h1 {
   font-weight: bold;
@@ -34,8 +48,8 @@ h2 {
   color: #626262;
 }
 #body-content a:hover {
-  color: #525252;
-  text-decoration-color: #4c9a51;
+  color: #424242;
+  text-decoration-color: #1ebd28;
 }
 dl {
   margin-top: 2em;
@@ -45,82 +59,61 @@ dl dd {
   margin-left: 3em;
   margin-bottom: 1em;
 }
-#table-of-contents {
-  font-family: "Alegreya Sans";
-  position: fixed;
-  bottom: 2em;
+#table-of-contents,
+#chapters {
+  font-family: "Roboto Condensed";
   font-size: 0.6em;
-  z-index: 1000;
+}
+#table-of-contents {
+  position: fixed;
+  bottom: 3em;
+}
+#chapters {
+  position: fixed;
+  top: 3em;
 }
 #body-content {
   padding-top: 5em;
 }
 .toc-current-doc {
   font-weight: bold !important;
-  color: #525252 !important;
+  color: #fafafa !important;
   text-transform: uppercase !important;
 }
 .nav > li > a {
-  padding: 3px 1px;
-  color: #848484;
+  padding: 0px 1px;
+  color: #c8c8c8;
 }
 .nav > li > a:hover {
   background: 0;
-  color: #525252;
+  color: #fafafa;
 }
 .nav > li.active > a {
-  padding: 3px 1px;
-  color: #626262;
+  padding: 0px 1px;
+  color: #ebebeb;
+  font-weight: bold;
 }
 .nav > li.active > a:hover {
   background: 0;
-  color: #525252;
+  color: #fafafa;
 }
-#topbar {
-  min-width: 46.65px;
-  position: fixed;
-  min-width: 100%;
-}
-#topbar .container-fluid {
-  background-color: #626262;
-  border-bottom: 1px solid #ebebeb;
-  z-index: 1000;
-}
-#topbar ul {
-  padding: 0 0;
-  margin: 2px 1em;
-}
-#topbar ul,
-#topbar li {
-  list-style: none;
-}
-#topbar li {
-  display: inline-block;
-  padding: 8px 8px;
-}
-#topbar li a {
-  font-family: "Alegreya Sans";
-  font-weight: bold;
-  font-variant: small-caps;
-  text-transform: lowercase;
-  font-size: 60%;
-  color: #ebebeb;
-}
-footer {
-  padding: 0px 0px;
+.footer {
+  padding: 15px 15px;
   color: #848484;
   font-size: 0.7em;
   line-height: 1.0em;
+  margin: -15px;
+  margin-top: 8em;
+  margin-bottom: 0;
+  background-color: #d5d5d5;
 }
 pre {
   border: 0px;
-  border-left: 4px solid #c8c8c8;
   border-radius: 0px;
   background: 0;
   margin: 0 0;
   padding: 8px;
-  margin-left: -17px;
-  padding-left: 13px;
+  margin: -15px;
 }
 pre.sourceCode,
 pre.output {
@@ -128,25 +121,30 @@ pre.output {
   line-height: 1.5em;
   margin-top: 2em;
   margin-bottom: 2em;
-  font-family: "Cousine", "Consolas", "DejaVu Sans Mono", monospace;
+  font-family: "Roboto Mono", "Consolas", "DejaVu Sans Mono", monospace;
+}
+pre.sourceCode {
+  background-color: #707070;
+  color: #fafafa;
 }
 pre.output {
+  background-color: #f4f4f4;
+  color: #424242;
   margin-top: -2.1em;
   z-index: 10000;
-  border-left: 4px solid #ebebeb;
 }
 code {
-  font-family: "Cousine", "Consolas", "DejaVu Sans Mono", monospace;
+  font-family: "Roboto Mono", "Consolas", "DejaVu Sans Mono", monospace;
   background: 0;
-  color: #646464;
-  background: #eaeaea;
+  color: #545454;
+  background: #e8e8e8;
   border-radius: 5px;
 }
 code.sourceCode span.kw {
-  color: #916f9d;
+  color: #b394be;
 }
 code.sourceCode span.dt {
-  color: #46a7a1;
+  color: #a7e2de;
 }
 code.sourceCode span.dv {
   color: #40a070;
@@ -155,16 +153,16 @@ code.sourceCode span.bn {
   color: #40a070;
 }
 code.sourceCode span.fl {
-  color: #d28f6e;
+  color: #f79d15;
 }
 code.sourceCode span.ch {
   color: #4070a0;
 }
 code.sourceCode span.st {
-  color: #4c9a51;
+  color: #1ebd28;
 }
 code.sourceCode span.co {
-  color: #848484;
+  color: #c8c8c8;
 }
 code.sourceCode span.ot {
   color: #007020;
@@ -176,5 +174,5 @@ code.sourceCode span.fu {
   color: #06287e;
 }
 code.sourceCode span.er {
-  color: #b95b4d;
+  color: #d94029;
 }

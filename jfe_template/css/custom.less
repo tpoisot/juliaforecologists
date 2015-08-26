@@ -1,20 +1,19 @@
-@import url(https://fonts.googleapis.com/css?family=Alegreya:400,400italic,700,700italic|Alegreya+Sans:400,400italic,700,700italic);
-@import url(http://fonts.googleapis.com/css?family=Cousine:400,400italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic|Roboto+Condensed:400,400italic,700,700italic,300,300italic|Roboto+Mono:400,400italic,500,500italic&subset=latin,greek);
 
-@caption: "Alegreya Sans";
-@serif: "Alegreya";
-@mono: "Cousine", "Consolas", "DejaVu Sans Mono", monospace;
+@caption: "Roboto Condensed";
+@serif: "Roboto";
+@mono: "Roboto Mono", "Consolas", "DejaVu Sans Mono", monospace;
 
-@bg: #fcfcfc;
-@fg: #525252;
+@bg: #fafafa;
+@fg: #424242;
 
 // Base colors
-@red:    #b95b4d;
-@orange: #d28f6e;
-@green:  #4c9a51;
-@blue:   #4476a8;
-@cyan:   #46a7a1;
-@purple: #916f9d;
+@red:    #d94029;
+@orange: #f79d15;
+@green:  #1ebd28;
+@blue:   #247ed9;
+@cyan:   #a7e2de;
+@purple: #b394be;
 
 @very-light-gray: #ebebeb;
 @light-gray:      #c8c8c8;
@@ -26,8 +25,26 @@
 html, body {
   bakground-color: @bg;
   color: @fg;
-  font-size: 1.2em;
-  line-height: 1.45em;
+  font-size: 1.1em;
+  line-height: 1.55em;
+  height: 100%;
+  min-height: 100%;
+}
+
+.container {
+  height: auto;
+  min-height: 100%;
+  background-color: mix(@fg, @bg, 98%);
+}
+
+.sidebar {
+  background-color: mix(@fg, @bg, 98%);
+  height: 100%;
+  min-height: 100%;
+}
+
+.content {
+  background-color: @bg;
 }
 
 // Fonts
@@ -82,12 +99,19 @@ dl {
 
 // Contents
 
-#table-of-contents {
+#table-of-contents, #chapters {
   font-family: @caption;
-  position: fixed;
-  bottom: 2em;
   font-size: 0.6em;
-  z-index: 1000;
+}
+
+#table-of-contents {
+  position: fixed;
+  bottom: 3em;
+}
+
+#chapters {
+  position: fixed;
+  top: 3em;
 }
 
 #body-content {
@@ -96,80 +120,51 @@ dl {
 
 .toc-current-doc {
   font-weight: bold !important;
-  color: @fg !important;
+  color: @bg !important;
   text-transform: uppercase !important;
 }
 
 .nav > li > a {
-  padding: 3px 1px;
-  color: @dark-gray;
+  padding: 0px 1px;
+  color: @light-gray;
   &:hover {
     background: 0;
-    color: @fg;
+    color: @bg;
   }
 }
 
 .nav > li.active > a {
-  padding: 3px 1px;
-  color: @very-dark-gray;
+  padding: 0px 1px;
+  color: @very-light-gray;
+  font-weight: bold;
   &:hover {
     background: 0;
-    color: @fg;
-  }
-}
-
-// topbar
-
-#topbar {
-  min-width: 46.65px;
-  position: fixed;
-  min-width: 100%;
-  .container-fluid {
-    background-color: @very-dark-gray;
-    border-bottom: 1px solid @very-light-gray;
-    z-index: 1000;
-  }
-  ul {
-    padding: 0 0;
-    margin: 2px 1em;
-  }
-  ul, li {
-    list-style: none;
-  }
-  li {
-    display: inline-block;
-    padding: 8px 8px;
-    a {
-      font-family: @caption;
-      font-weight: bold;
-      font-variant: small-caps;
-      text-transform: lowercase;
-      font-size: 60%;
-      color: @very-light-gray;
-    }
+    color: @bg;
   }
 }
 
 // Footer
 
-footer {
-  padding: 0px 0px;
+.footer {
+  padding: 15px 15px;
   color: @dark-gray;
   font-size: 0.7em;
   line-height: 1.0em;
+  margin: -15px;
+  margin-top: 8em;
+  margin-bottom: 0;
+  background-color: mix(@bg, @fg, 80%);
 }
 
 // Code
 
 pre {
   border: 0px;
-  border-left: 4px solid @light-gray;
   border-radius: 0px;
   background: 0;
   margin: 0 0;
   padding: 8px;
-  margin-left: -17px;
-  padding-left: 13px;
+  margin: -15px;
   &.sourceCode, &.output {
     font-size: 0.75em;
     line-height: 1.5em;
@@ -177,10 +172,15 @@ pre {
     margin-bottom: 2em;
     font-family: @mono;
   }
+  &.sourceCode {
+    background-color: mix(@bg, @fg, 25%);
+    color: @bg;
+  }
   &.output {
+    background-color: mix(@bg, @fg, 97%);
+    color: @fg;
     margin-top: -2.1em;
     z-index: 10000;
-    border-left: 4px solid @very-light-gray;
   }
 }
 
@@ -201,7 +201,7 @@ code.sourceCode span.bn { color: #40a070; }
 code.sourceCode span.fl { color: @orange; }
 code.sourceCode span.ch { color: #4070a0; }
 code.sourceCode span.st { color: @green; }
-code.sourceCode span.co { color: @dark-gray; }
+code.sourceCode span.co { color: @light-gray; }
 code.sourceCode span.ot { color: #007020; }
 code.sourceCode span.al { color: red; }
 code.sourceCode span.fu { color: #06287e; }

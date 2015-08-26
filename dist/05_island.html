@@ -12,24 +12,11 @@
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
-  <div id="topbar" style="z-index: 3">
-    <div class="container-fluid">
-      <div class="row">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="01_primer.html">Julia primer</a></li>
-          <li><a href="02_competition.html">Competition models</a></li>
-          <li><a href="03_leslie.html">Leslie matrices</a></li>
-          <li><a href="04_glvm.html">Generalized Lotka-Volterra</a></li>
-          <li><a href="05_island.html">Island biogeography</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
 
   <div class="container" style="z-index: auto">
     <div class="row">
-      <div class="col-sm-9">
+
+      <div class="col-sm-9 col-sm-push-3 content">
       <div id="body-content">
 <p>In this chapter, we will use the example of neutral dynamics in a mainland/island system to approach how to do stochastic simulations with Julia.</p>
 <h1 id="the-ecological-scenario">The ecological scenario</h1>
@@ -43,36 +30,193 @@
 <pre class="output"><code>(100,400)</code></pre>
 <p>Ain't this a cool notation? Julia is able to <em>unpack</em> the different arguments, so you can assign more than one variable per line. This comes at a cost in terms of readability.</p>
 <p>The island can be modeled by an array of size <code>k</code>, which will hold an integer representing the number of the species to which every individual belongs. We will therefore pre-allocate this array. We will also pre-allocate a temporary array, which will be used to store the intermediate steps.</p>
-<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">island = zeros(<span class="dt">Int64</span>, k)
-buffer = zeros(<span class="dt">Int64</span>, k)</code></pre></div>
-<pre class="output"><code>400-element Array{Int64,1}:
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- ⋮
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0</code></pre>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">island, buffer = zeros(<span class="dt">Int64</span>, k), zeros(<span class="dt">Int64</span>, k)</code></pre></div>
+<pre class="output"><code>([0,0,0,0,0,0,0,0,0,0  …  0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0  …  0,0,0,0,0,0,0,0,0,0])</code></pre>
+<p>Finally, we will allocate the mainland, which is a pool of <code>S</code> unique species:</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="kw">const</span> mainland = vec([<span class="fl">1</span>:S])</code></pre></div>
+<pre class="output"><code>100-element Array{Int64,1}:
+   1
+   2
+   3
+   4
+   5
+   6
+   7
+   8
+   9
+  10
+   ⋮
+  92
+  93
+  94
+  95
+  96
+  97
+  98
+  99
+ 100</code></pre>
+<p>Note that <code>mainland</code> will not be modified, so it can be made a constant.</p>
 <h2 id="simulation-loop">Simulation loop</h2>
+<p>Now, we can start simulating. The first step is to populate the <code>island</code>, from the <code>mainland</code>. This can be done by using the <code>sample</code> function from the <code>StatsBase</code> package.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">using StatsBase
+sample!(mainland, island)</code></pre></div>
+<pre class="output"><code>400-element Array{Int64,1}:
+ 66
+ 12
+  8
+ 34
+ 17
+  7
+ 40
+  6
+ 93
+ 37
+  ⋮
+ 86
+ 30
+ 28
+ 14
+ 75
+  5
+ 44
+ 73
+ 35</code></pre>
+<p>Why do we <code>sample!</code>? It is a convention in Julia that functions ending with a <code>!</code> <em>modify one of their arguments</em>. A look at the documentation of <code>sample!</code> will reveal that it will fill its second argument with randomly sampled elements from the first. This avoids writing a loop, and is aggressively optimized.</p>
+<p>How many unique species on our island?</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">length(unique(island))</code></pre></div>
+<pre class="output"><code>97</code></pre>
+<p>Note that we do not assign the result of this operation to <code>island</code>. Functions with a <code>!</code> operate on the argument itself, so there is no need to assign anything.</p>
+<p>The next step, is to write a function that will take <code>island</code> and <code>mainland</code> as its arguments, and modify <code>island</code> as a function of the <code>e</code> and <code>m</code> parameters. Because this function will <em>modify</em> <code>island</code>, its name will end with a <code>!</code>.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="kw">function</span> zerosumdrift!(is::<span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">1</span>}, ml::<span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">1</span>}, e::<span class="dt">Float64</span>, m::<span class="dt">Float64</span>)
+  <span class="kw">function</span> singlecell(x)
+    <span class="co"># Three choices: same species, one from the island, one from the mainland</span>
+    choices = vec([x, sample(is), sample(ml)])
+    <span class="co"># And we know the probabilities for each</span>
+    <span class="kw">return</span> sample(choices, WeightVec([(<span class="fl">1</span>-e), e*(<span class="fl">1</span>-m), e*m]))
+  <span class="kw">end</span>
+  map!(singlecell, is)
+<span class="kw">end</span></code></pre></div>
+<pre class="output"><code>zerosumdrift! (generic function with 1 method)</code></pre>
+<h2 id="dont-panic">Don't panic</h2>
+<p>Oh wow, many new things here. Let's have a look at them in turn. First, we define a <code>function</code> within a <code>function</code>. Because we can, but also because it will have its usefulness.</p>
+<p>Our top-level function (<code>zerosumdrift!</code>) takes the island, the mainland, and the parameters for arguments. In the description of the model, we have set up a scenario for what will happen at each &quot;cell&quot; in this island. The function <code>singlecell</code> is an implementation of this scenario. There are a three possible situations: either the individual remains (<code>x</code>), it is replaced by a local individual (<code>sample(is)</code>), or by a mainland individual (<code>sample(ml)</code>).</p>
+<p>This function returns a species ID for <em>one</em> cell of our island. So what we need to do now is apply this function to <em>all</em> cells. This is what <code>map</code> does. Remember <code>filter</code>, from the chapter on <a href="3_leslie.html">Leslie matrices</a>?</p>
+<p>Let me remind you:</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">filter((x) -&gt; x &gt;= <span class="fl">3</span>, vec([<span class="fl">2</span> <span class="fl">3</span> <span class="fl">4</span> <span class="fl">5</span> <span class="fl">6</span>]))</code></pre></div>
+<pre class="output"><code>4-element Array{Int64,1}:
+ 3
+ 4
+ 5
+ 6</code></pre>
+<p>The <code>map</code> function is <em>really</em> similar, in that it takes a function, and apply it to <em>all</em> elements of its second argument. Wanna see for yourself?</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">map((x) -&gt; x + <span class="fl">1</span>, vec([<span class="fl">1</span> <span class="fl">2</span> <span class="fl">3</span>]))</code></pre></div>
+<pre class="output"><code>3-element Array{Int64,1}:
+ 2
+ 3
+ 4</code></pre>
+<p>Its <code>map!</code> variant does the same thing, but <em>updates</em> the values of the argument it iterates over. So in our situation, it replaces the species <code>x</code> by the result of <code>singlecell(x)</code>. And everything that uses <code>map</code> is easy to use over several CPUs (this will be discussed later).</p>
 <h1 id="running-the-model">Running the model</h1>
-        <hr>
+<h2 id="simple-tests">Simple tests</h2>
+<p>Let's test this:</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">zerosumdrift!(island, mainland, <span class="fl">0.4</span>, <span class="fl">0.2</span>)
+length(unique(island))</code></pre></div>
+<pre class="output"><code>97</code></pre>
+<p>Now, what happens over 100 timesteps?</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="kw">for</span> i = <span class="fl">1</span>:<span class="fl">100</span>
+  zerosumdrift!(island, mainland, <span class="fl">0.4</span>, <span class="fl">0.2</span>)
+<span class="kw">end</span>
+length(unique(island))</code></pre></div>
+<pre class="output"><code>84</code></pre>
+<h2 id="looking-at-the-dynamics-version-1">Looking at the dynamics, version 1</h2>
+<p>What if we want to record the output of a given function, at each timestep? This will be easy!</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="co"># Let&#39;s start again with a new island</span>
+sample!(mainland, island)
+map((x) -&gt; length(unique(zerosumdrift!(island, mainland, <span class="fl">0.4</span>, <span class="fl">0.2</span>))), <span class="fl">1</span>:<span class="fl">100</span>)</code></pre></div>
+<pre class="output"><code>100-element Array{Int64,1}:
+ 96
+ 93
+ 86
+ 86
+ 84
+ 84
+ 87
+ 91
+ 87
+ 80
+  ⋮
+ 86
+ 77
+ 78
+ 73
+ 74
+ 75
+ 76
+ 74
+ 75</code></pre>
+<p>This line will repeat the <code>zerosumdrift!</code> function 100 times, but because it is wrapped in the measurement of how many species there are, it will instead return the number of unique species. This is <em>one</em> way to store the dynamics.</p>
+<h2 id="looking-at-the-dynamics-version-2">Looking at the dynamics, version 2</h2>
+<p>But the previous way may not be optimal, for a <em>lot</em> of reasons. We might want to keep the output in a matrix, for example. So let us pre-allocate one, and fill it step by step.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">timesteps = <span class="fl">100</span>
+output = zeros(<span class="dt">Int64</span>, (k, timesteps))
+output[:,<span class="fl">1</span>] = sample!(mainland, island)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fl">2</span>:timesteps
+  output[:,i] = zerosumdrift!(island, mainland, <span class="fl">0.4</span>, <span class="fl">0.2</span>)
+<span class="kw">end</span>
+output[:,<span class="fl">100</span>]</code></pre></div>
+<pre class="output"><code>400-element Array{Int64,1}:
+ 57
+ 43
+ 39
+ 30
+  9
+ 85
+ 24
+ 99
+ 91
+ 18
+  ⋮
+ 18
+ 36
+ 28
+ 38
+ 91
+ 90
+ 22
+ 72
+  2</code></pre>
+<p>We <em>can</em> do this, because Julia will still return the values of the object if modifies. The <code>output</code> matrix is accessed by columns.</p>
+<p>Now, can we do something <em>like</em> <code>map</code> on an array with more than one dimension? Yes! We can use <code>mapslices</code>. As its name indicates, <code>mapslices</code> will <code>map</code> over <em>slices</em> of an array, here meaning either rows or columns. When compared to <code>map</code>, it takes an additional argument, which is the <em>dimension</em> on which to slice. Since the different timesteps are columns, which are the first dimension in Julia, we will use <code>1</code>.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">mapslices((x) -&gt; length(unique(x)), output, <span class="fl">1</span>)</code></pre></div>
+<pre class="output"><code>1x100 Array{Int64,2}:
+ 99  98  94  87  86  83  83  86  80  …  79  85  82  84  85  81  81  81  80</code></pre>
+<h1 id="conclusions">Conclusions</h1>
+<ol type="1">
+<li>Functions that end with <code>!</code> modify their input.</li>
+<li><code>map</code> applies a function to all elements of an iterable.</li>
+<li><code>map!</code> modifies the values it iterates over.</li>
+<li><code>mapslices</code></li>
+<li>Functions are great and you should use them all the time.</li>
+</ol>
+<div class="footer">
+  <p class="muted">Last modified by Timothée Poisot on mer aoû 26 15:02:39 EDT 2015. Generated with
+  <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
+</div>
       </div>
       </div>
 
-      <div class="col-sm-offset-9" style="z-index: 2">
+      <div class="col-sm-3 col-sm-pull-9 sidebar">
+        <div id="chapters">
+          <ul class="toc list nav">
+            <li><a class="toc-current-doc">Chapters</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="01_primer.html">Julia primer</a></li>
+            <li><a href="02_competition.html">Competition models</a></li>
+            <li><a href="03_leslie.html">Leslie matrices</a></li>
+            <li><a href="04_glvm.html">Generalized Lotka-Volterra</a></li>
+            <li><a href="05_island.html">Island biogeography</a></li>
+          </ul>
+        </div>
+        &nbsp;
         <div id="table-of-contents">
           <div id="table-of-contents-content">
 
@@ -92,7 +236,22 @@ buffer = zeros(<span class="dt">Int64</span>, k)</code></pre></div>
                 <a style="margin-left: 1.0em" class="toc-item" href="#simulation-loop">Simulation loop</a>
             </li>
             <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#dont-panic">Don't panic</a>
+            </li>
+            <li>
                 <a style="margin-left: 0.5em" class="toc-item" href="#running-the-model">Running the model</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#simple-tests">Simple tests</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#looking-at-the-dynamics-version-">Looking at the dynamics, version 1</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#looking-at-the-dynamics-version-">Looking at the dynamics, version 2</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#conclusions">Conclusions</a>
             </li>
             </ul>
 
@@ -111,12 +270,10 @@ buffer = zeros(<span class="dt">Int64</span>, k)</code></pre></div>
           </div>
         </div>
       </div>
+
     </div>
 
-  <footer class="col-sm-8">
-    <p class="muted">Last modified by Timothée Poisot on mer aoû 26 12:36:12 EDT 2015. Generated with
-    <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
-  </footer>
+
 
   </div>
 </body>

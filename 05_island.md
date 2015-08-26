@@ -73,8 +73,136 @@ Why do we `sample!`? It is a convention in Julia that functions ending with a `!
 reveal that it will fill its second argument with randomly sampled elements from
 the first. This avoids writing a loop, and is aggressively optimized.
 
+How many unique species on our island?
+
+```julia
+length(unique(island))
+```
+
+Note that we do not assign the result of this operation to `island`. Functions
+with a `!` operate on the argument itself, so there is no need to assign
+anything.
+
+The next step, is to write a function that will take `island` and `mainland` as
+its arguments, and modify `island` as a function of the `e` and `m` parameters.
+Because this function will *modify* `island`, its name will end with a `!`.
+
+```julia
+function zerosumdrift!(is::Array{Int64,1}, ml::Array{Int64,1}, e::Float64, m::Float64)
+  function singlecell(x)
+    # Three choices: same species, one from the island, one from the mainland
+    choices = vec([x, sample(is), sample(ml)])
+    # And we know the probabilities for each
+    return sample(choices, WeightVec([(1-e), e*(1-m), e*m]))
+  end
+  map!(singlecell, is)
+end
+```
+
+## Don't panic
+
+Oh wow, many new things here. Let's have a look at them in turn. First, we
+define a `function` within a `function`.  Because we can, but also because it
+will have its usefulness.
+
+Our top-level function (`zerosumdrift!`) takes the island, the mainland, and the
+parameters for arguments. In the description of the model, we have set up a
+scenario for what will happen at each "cell" in this island. The function
+`singlecell` is an implementation of this scenario. There are a three possible
+situations: either the individual remains (`x`), it is replaced by a local
+individual (`sample(is)`), or by a mainland individual (`sample(ml)`).
+
+This function returns a species ID for *one* cell of our island. So what we need
+to do now is apply this function to *all* cells. This is what `map` does.
+Remember `filter`, from the chapter on [Leslie matrices](3_leslie.html)?
+
+Let me remind you:
+
+```julia
+filter((x) -> x >= 3, vec([2 3 4 5 6]))
+```
+
+The `map` function is *really* similar, in that it takes a function, and apply
+it to *all* elements of its second argument. Wanna see for yourself?
+
+```julia
+map((x) -> x + 1, vec([1 2 3]))
+```
+
+Its `map!` variant does the same thing, but *updates* the values of the argument
+it iterates over. So in our situation, it replaces the species `x` by the result
+of `singlecell(x)`. And everything that uses `map` is easy to use over several
+CPUs (this will be discussed later).
+
 # Running the model
+
+## Simple tests
+
+Let's test this:
+
+```julia
+zerosumdrift!(island, mainland, 0.4, 0.2)
+length(unique(island))
+```
+
+Now, what happens over 100 timesteps?
+
+```julia
+for i = 1:100
+  zerosumdrift!(island, mainland, 0.4, 0.2)
+end
+length(unique(island))
+```
+
+## Looking at the dynamics, version 1
+
+What if we want to record the output of a given function, at each timestep? This
+will be easy!
+
+```julia
+# Let's start again with a new island
+sample!(mainland, island)
+map((x) -> length(unique(zerosumdrift!(island, mainland, 0.4, 0.2))), 1:100)
+```
+
+This line will repeat the `zerosumdrift!` function 100 times, but because it is
+wrapped in the measurement of how many species there are, it will instead return
+the number of unique species. This is *one* way to store the dynamics.
+
+## Looking at the dynamics, version 2
+
+But the previous way may not be optimal, for a *lot* of reasons. We might want
+to keep the output in a matrix, for example. So let us pre-allocate one, and
+fill it step by step.
+
+```julia
+timesteps = 100
+output = zeros(Int64, (k, timesteps))
+output[:,1] = sample!(mainland, island)
+for i in 2:timesteps
+  output[:,i] = zerosumdrift!(island, mainland, 0.4, 0.2)
+end
+output[:,100]
+```
+
+We *can* do this, because Julia will still return the values of the object if
+modifies. The `output` matrix is accessed by columns.
+
+Now, can we do something *like* `map` on an array with more than one dimension?
+Yes! We can use `mapslices`. As its name indicates, `mapslices` will `map` over
+*slices* of an array, here meaning either rows or columns. When compared to
+`map`, it takes an additional argument, which is the *dimension* on which to
+slice. Since the different timesteps are columns, which are the first dimension
+in Julia, we will use `1`.
+
+```julia
+mapslices((x) -> length(unique(x)), output, 1)
+```
 
 # Conclusions
 
 1. Functions that end with `!` modify their input.
+2. `map` applies a function to all elements of an iterable.
+3. `map!` modifies the values it iterates over.
+4. `mapslices`
+5. Functions are great and you should use them all the time.

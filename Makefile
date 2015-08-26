@@ -4,7 +4,7 @@ jexe = julia
 outf = dist
 
 SOURCES=$(wildcard *.md)
-PAGES=$(patsubst %.md,html/%.html,$(SOURCES))
+PAGES=$(patsubst %.md,$(outf)/%.html,$(SOURCES))
 
 .PHONY: $(outf)
 

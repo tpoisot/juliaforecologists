@@ -12,24 +12,11 @@
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
-  <div id="topbar" style="z-index: 3">
-    <div class="container-fluid">
-      <div class="row">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="01_primer.html">Julia primer</a></li>
-          <li><a href="02_competition.html">Competition models</a></li>
-          <li><a href="03_leslie.html">Leslie matrices</a></li>
-          <li><a href="04_glvm.html">Generalized Lotka-Volterra</a></li>
-          <li><a href="05_island.html">Island biogeography</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
 
   <div class="container" style="z-index: auto">
     <div class="row">
-      <div class="col-sm-9">
+
+      <div class="col-sm-9 col-sm-push-3 content">
       <div id="body-content">
 <h1 id="why-julia">Why Julia?</h1>
 <p>The <a href="http://julialang.org/">Julia</a> programming language is a new initiative to provide an efficient, easy to write, high-performance language for users of computing environments. Julia is simple to learn, easy to write, and runs extremely fast.</p>
@@ -52,11 +39,26 @@
 <dd>This chapters will use some points from chapter 2 and 3, to discuss how to make Julia code <em>fast</em>, and how to declare macros.
 </dd>
 </dl>
-        <hr>
+<div class="footer">
+  <p class="muted">Last modified by Timothée Poisot on mer aoû 26 15:05:38 EDT 2015. Generated with
+  <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
+</div>
       </div>
       </div>
 
-      <div class="col-sm-offset-9" style="z-index: 2">
+      <div class="col-sm-3 col-sm-pull-9 sidebar">
+        <div id="chapters">
+          <ul class="toc list nav">
+            <li><a class="toc-current-doc">Chapters</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="01_primer.html">Julia primer</a></li>
+            <li><a href="02_competition.html">Competition models</a></li>
+            <li><a href="03_leslie.html">Leslie matrices</a></li>
+            <li><a href="04_glvm.html">Generalized Lotka-Volterra</a></li>
+            <li><a href="05_island.html">Island biogeography</a></li>
+          </ul>
+        </div>
+        &nbsp;
         <div id="table-of-contents">
           <div id="table-of-contents-content">
 
@@ -89,12 +91,10 @@
           </div>
         </div>
       </div>
+
     </div>
 
-  <footer class="col-sm-8">
-    <p class="muted">Last modified by Timothée Poisot on mer aoû 26 12:44:31 EDT 2015. Generated with
-    <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
-  </footer>
+
 
   </div>
 </body>

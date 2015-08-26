@@ -59,4 +59,22 @@ Note that `mainland` will not be modified, so it can be made a constant.
 
 ## Simulation loop
 
+Now, we can start simulating. The first step is to populate the `island`, from
+the `mainland`. This can be done by using the `sample` function from the
+`StatsBase` package.
+
+```julia
+using StatsBase
+sample!(mainland, island)
+```
+
+Why do we `sample!`? It is a convention in Julia that functions ending with a `!`
+*modify one of their arguments*. A look at the documentation of `sample!` will
+reveal that it will fill its second argument with randomly sampled elements from
+the first. This avoids writing a loop, and is aggressively optimized.
+
 # Running the model
+
+# Conclusions
+
+1. Functions that end with `!` modify their input.

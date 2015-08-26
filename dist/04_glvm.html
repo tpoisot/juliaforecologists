@@ -12,24 +12,11 @@
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
-  <div id="topbar" style="z-index: 3">
-    <div class="container-fluid">
-      <div class="row">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="01_primer.html">Julia primer</a></li>
-          <li><a href="02_competition.html">Competition models</a></li>
-          <li><a href="03_leslie.html">Leslie matrices</a></li>
-          <li><a href="04_glvm.html">Generalized Lotka-Volterra</a></li>
-          <li><a href="05_island.html">Island biogeography</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
 
   <div class="container" style="z-index: auto">
     <div class="row">
-      <div class="col-sm-9">
+
+      <div class="col-sm-9 col-sm-push-3 content">
       <div id="body-content">
 <p>In this chapter, we will use the generalized Lotka-Volterra model to discuss how Julia code can be optimized. Most of the key elements have been covered in chapters <a href="02_competition.html">2</a> and <a href="03_leslie.html">3</a>.</p>
 <h1 id="the-generalized-lotka-volterra-model">The generalized Lotka-Volterra model</h1>
@@ -59,7 +46,7 @@
 <span class="kw">end</span></code></pre></div>
 <p>Then we can test it:</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark <span class="fl">2</span> + <span class="fl">2</span></code></pre></div>
-<pre class="output"><code>1.1164000000000001e-7</code></pre>
+<pre class="output"><code>9.975999999999999e-8</code></pre>
 <p>The output is the <em>average</em> time needed, in seconds, to run this particular expression, over 50 replicate runs.</p>
 <h2 id="defining-the-testing-dataset">Defining the testing dataset</h2>
 <p>We will use a large number of species, to be able to tell whether we can improve the performance of the function.</p>
@@ -69,26 +56,26 @@
 <span class="kw">const</span> r = rand(n_species) .+ <span class="fl">0.2</span>;
 <span class="kw">const</span> n = rand(n_species);</code></pre></div>
 <pre class="output"><code>1000-element Array{Float64,1}:
- 0.589374 
- 0.269405 
- 0.434654 
- 0.919816 
- 0.0452117
- 0.73765  
- 0.740902 
- 0.592177 
- 0.129088 
- 0.286886 
+ 0.15876  
+ 0.44571  
+ 0.424866 
+ 0.951546 
+ 0.500892 
+ 0.877138 
+ 0.288977 
+ 0.599531 
+ 0.0442817
+ 0.615917 
  ⋮        
- 0.886462 
- 0.0932444
- 0.940222 
- 0.519269 
- 0.306006 
- 0.57386  
- 0.274153 
- 0.318387 
- 0.0925501</code></pre>
+ 0.827525 
+ 0.0509028
+ 0.758797 
+ 0.536658 
+ 0.651398 
+ 0.84748  
+ 0.933369 
+ 0.145349 
+ 0.716869 </code></pre>
 <p>It is unlikely that these values are going to have any sort of ecological relevance, but this is not really what this example is about.</p>
 <h1 id="first-attempt">First attempt</h1>
 <h2 id="implementation">Implementation</h2>
@@ -109,7 +96,7 @@
 <h2 id="is-it-fast">Is it fast?</h2>
 <p>Let's see.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_1(n, r ,A)</code></pre></div>
-<pre class="output"><code>0.0036876923399999993</code></pre>
+<pre class="output"><code>0.00342519898</code></pre>
 <p>Not bad. On the order of <span class="math inline">10<sup> − 3</sup></span> seconds. It's a poorly written baseline, and it's already not too bad. Remember we are talking about 1000 species.</p>
 <h1 id="second-attempt">Second attempt</h1>
 <h2 id="implementation-1">Implementation</h2>
@@ -129,7 +116,7 @@
 <h2 id="is-it-fast-1">Is it fast?</h2>
 <p>Let's see.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_2(n, r ,A)</code></pre></div>
-<pre class="output"><code>0.00328885568</code></pre>
+<pre class="output"><code>0.0033847618999999995</code></pre>
 <p>How about that? It performs the same as the previous version. Almost exactly the same in fact. Well, this can mean one of two things. Either our naive interpretation was the most efficient, or we are not optimizing the right thing.</p>
 <h1 id="third-attempt">Third attempt</h1>
 <h2 id="implementation-2">Implementation</h2>
@@ -142,7 +129,7 @@
 <h2 id="is-it-fast-2">Is it fast?</h2>
 <p>Let's see.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_3(n, r ,A)</code></pre></div>
-<pre class="output"><code>0.00078333182</code></pre>
+<pre class="output"><code>0.00065163636</code></pre>
 <p><em>It's SO FAST YOU GUYS!</em></p>
 <p>Almost an order of magnitude faster than the loop-based solutions.</p>
 <h1 id="conclusions">Conclusions</h1>
@@ -152,11 +139,26 @@
 <li>Linear algebra is faster than using loops.</li>
 <li>Using <code>const</code> for global variables is a way to improve performance.</li>
 </ol>
-        <hr>
+<div class="footer">
+  <p class="muted">Last modified by Timothée Poisot on mer aoû 26 15:05:27 EDT 2015. Generated with
+  <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
+</div>
       </div>
       </div>
 
-      <div class="col-sm-offset-9" style="z-index: 2">
+      <div class="col-sm-3 col-sm-pull-9 sidebar">
+        <div id="chapters">
+          <ul class="toc list nav">
+            <li><a class="toc-current-doc">Chapters</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="01_primer.html">Julia primer</a></li>
+            <li><a href="02_competition.html">Competition models</a></li>
+            <li><a href="03_leslie.html">Leslie matrices</a></li>
+            <li><a href="04_glvm.html">Generalized Lotka-Volterra</a></li>
+            <li><a href="05_island.html">Island biogeography</a></li>
+          </ul>
+        </div>
+        &nbsp;
         <div id="table-of-contents">
           <div id="table-of-contents-content">
 
@@ -222,12 +224,10 @@
           </div>
         </div>
       </div>
+
     </div>
 
-  <footer class="col-sm-8">
-    <p class="muted">Last modified by Timothée Poisot on mer aoû 26 12:44:20 EDT 2015. Generated with
-    <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
-  </footer>
+
 
   </div>
 </body>

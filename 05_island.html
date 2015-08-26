@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="author" content="Timothée Poisot">
+  <meta charset="utf-8">
+  <title>Julia for ecologists :: Neutral dynamics on islands</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+  <link href="css/custom.css" rel="stylesheet" type="text/css" media="all">
+  <script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
+  <script src="js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="js/list.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+  <div id="topbar" style="z-index: 3">
+    <div class="container-fluid">
+      <div class="row">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="01_primer.html">Julia primer</a></li>
+          <li><a href="02_competition.html">Competition models</a></li>
+          <li><a href="03_leslie.html">Leslie matrices</a></li>
+          <li><a href="04_glvm.html">Generalized Lotka-Volterra</a></li>
+          <li><a href="05_island.html">Island biogeography</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="z-index: auto">
+    <div class="row">
+      <div class="col-sm-9">
+      <div id="body-content">
+<p>In this chapter, we will use the example of neutral dynamics in a mainland/island system to approach how to do stochastic simulations with Julia.</p>
+<h1 id="the-ecological-scenario">The ecological scenario</h1>
+<p>There is a mainland, on which <span class="math inline"><em>S</em></span> species live. Close to this mainland is an island, on which up to <span class="math inline"><em>k</em></span> individuals can live. All of these individuals have a probability <span class="math inline"><em>e</em></span> of dying, which frees up a spot. Any spot can be filled by immigration from the mainland, with probability <span class="math inline"><em>m</em></span>, or is filled by local reproduction from the island.</p>
+<p>Let us go through the different solutions. A spot occupied by a species <span class="math inline"><em>x</em></span> can remain occupied by a species <span class="math inline"><em>x</em></span> if there is no mortality event, which happens with probability <span class="math inline">(1 − <em>e</em>)</span>. It can be replaced by one of the local species if there is a mortality event <em>but</em> no immigration event (with probability <span class="math inline"><em>e</em>(1 − <em>m</em>)</span>), or by one of the mainland species if there is both mortality <em>and</em> immigration (<span class="math inline"><em>e</em><em>m</em></span>).</p>
+<p>This is essentially Hubbell's zero-sum drift model, as all species have equal chance of dying, reproducing, and immigrating.</p>
+<h1 id="setting-up-the-model">Setting up the model</h1>
+<h2 id="data-structure">Data structure</h2>
+<p>We will need to define a few global variables, for the number of species, and the number of individuals on the island.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="kw">const</span> S, k = <span class="fl">100</span>, <span class="fl">400</span></code></pre></div>
+<pre class="output"><code>(100,400)</code></pre>
+<p>Ain't this a cool notation? Julia is able to <em>unpack</em> the different arguments, so you can assign more than one variable per line. This comes at a cost in terms of readability.</p>
+<p>The island can be modeled by an array of size <code>k</code>, which will hold an integer representing the number of the species to which every individual belongs. We will therefore pre-allocate this array. We will also pre-allocate a temporary array, which will be used to store the intermediate steps.</p>
+<div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">island = zeros(<span class="dt">Int64</span>, k)
+buffer = zeros(<span class="dt">Int64</span>, k)</code></pre></div>
+<pre class="output"><code>400-element Array{Int64,1}:
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ ⋮
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0</code></pre>
+<h2 id="simulation-loop">Simulation loop</h2>
+<h1 id="running-the-model">Running the model</h1>
+        <hr>
+      </div>
+      </div>
+
+      <div class="col-sm-offset-9" style="z-index: 2">
+        <div id="table-of-contents">
+          <div id="table-of-contents-content">
+
+            <ul class="toc list nav"><li>
+                <a class="toc-item toc-current-doc" href="05_island.html">Neutral dynamics on islands</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#the-ecological-scenario">The ecological scenario</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#setting-up-the-model">Setting up the model</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#data-structure">Data structure</a>
+            </li>
+            <li>
+                <a style="margin-left: 1.0em" class="toc-item" href="#simulation-loop">Simulation loop</a>
+            </li>
+            <li>
+                <a style="margin-left: 0.5em" class="toc-item" href="#running-the-model">Running the model</a>
+            </li>
+            </ul>
+
+            <script>
+                var toclist = new List("table-of-contents",
+                                       {valueNames: ["toc-item"]})
+
+                $("body").scrollspy({target: "#table-of-contents"});
+
+                $("#table-of-contents li").on("activate.bs.scrollspy",
+                    function(event) {
+                        $("#table-of-contents ul").find("a").css({"font-weight": "normal"});
+                        $(this).children("a").css({"font-weight": "bolder"});
+                    });
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <footer class="col-sm-8">
+    <p class="muted">Last modified by Timothée Poisot on mer aoû 26 12:36:12 EDT 2015. Generated with
+    <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
+  </footer>
+
+  </div>
+</body>
+</html>

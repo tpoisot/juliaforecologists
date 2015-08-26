@@ -63,8 +63,6 @@ integer(2.0)
 
 ## A compiled language ...
 
-## ... that you don't have to compile
-
 # Loops
 
 # Functions
@@ -83,6 +81,10 @@ instruction.
 ```
 
 # Packages
+
+Julia is starting to develop a good ecosystem of packages. There may not be a
+lot, but there are usually high quality, and designed with performance in mind.
+Many non-trivial operations have packages to perform them.
 
 ## Installing packages
 

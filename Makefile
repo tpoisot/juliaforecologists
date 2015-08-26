@@ -8,20 +8,23 @@ PAGES=$(patsubst %.md,html/%.html,$(SOURCES))
 
 .PHONY: $(outf)
 
-ALL: $(outf) $(PAGES)
+ALL: $(outf) $(outf)/css/custom.css $(PAGES)
 
 $(outf):
 	mkdir -p $(outf)
 
 .SECONDEXPANSION:
 $(PAGES): $(SOURCES) jfe_template/css/custom.css
-	$(judo) $(patsubst html/%.html,%.md,$@) --out $(outf) --template jfe_template
+	$(judo) $(patsubst $(outf)/%.html,%.md,$@) --out $(outf) --template jfe_template
 
 clean:
 	@rm $(outf)/*.html
 
 jfe_template/css/custom.css: jfe_template/css/custom.less
 	lessc $< $@
+
+$(outf)/css/custom.css: jfe_template/css/custom.css
+	cp $< $@
 
 $(judo):
 	$(jexe) -e 'Pkg.clone("https://github.com/dcjones/Judo.jl.git");'

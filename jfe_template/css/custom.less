@@ -1,10 +1,10 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic|Roboto+Condensed:400,400italic,700,700italic,300,300italic|Roboto+Mono:400,400italic,500,500italic&subset=latin,greek);
+@import url(https://fonts.googleapis.com/css?family=PT+Mono|PT+Sans:400,400italic,700,700italic|PT+Serif:400,400italic,700,700italic);
 
-@caption: "Roboto Condensed";
-@serif: "Roboto";
-@mono: "Roboto Mono", "Consolas", "DejaVu Sans Mono", monospace;
+@caption: "PT Sans";
+@serif: "PT Serif";
+@mono: "PT Mono Mono", "Consolas", "DejaVu Sans Mono", monospace;
 
-@bg: #fafafa;
+@bg: #fdfdfd;
 @fg: #424242;
 
 // Base colors
@@ -23,11 +23,11 @@
 // General
 
 b, strong {
-  font-weight: 500;
+  font-weight: 700;
 }
 
 html, body {
-  bakground-color: @bg;
+  //bakground-color: @bg;
   color: @fg;
   font-size: 1.1em;
   line-height: 1.55em;
@@ -35,14 +35,22 @@ html, body {
   min-height: 100%;
 }
 
+body {
+  background: url("../bg.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
 .container {
   height: auto;
   min-height: 100%;
-  background-color: mix(@fg, @bg, 98%);
+  background-color: fadeout(@very-light-gray, 5%);
 }
 
 .sidebar {
-  background-color: mix(@fg, @bg, 98%);
+//  background-color: mix(@fg, @bg, 98%);
   height: 100%;
   min-height: 100%;
 }
@@ -124,26 +132,26 @@ dl {
 
 .toc-current-doc {
   font-weight: bold !important;
-  color: @bg !important;
+  color: @fg !important;
   text-transform: uppercase !important;
 }
 
 .nav > li > a {
   padding: 0px 1px;
-  color: @light-gray;
+  color: @dark-gray;
   &:hover {
     background: 0;
-    color: @bg;
+    color: @fg;
   }
 }
 
 .nav > li.active > a {
   padding: 0px 1px;
-  color: @very-light-gray;
+  color: @very-dark-gray;
   font-weight: bold;
   &:hover {
     background: 0;
-    color: @bg;
+    color: @fg;
   }
 }
 
@@ -167,7 +175,7 @@ pre {
   border-radius: 0px;
   background: 0;
   margin: 0 0;
-  padding: 8px;
+  padding: 15px;
   margin: -15px;
   &.sourceCode, &.output {
     font-size: 0.75em;

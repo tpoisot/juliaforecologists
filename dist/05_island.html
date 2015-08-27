@@ -61,30 +61,30 @@
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">using StatsBase
 sample!(mainland, island)</code></pre></div>
 <pre class="output"><code>400-element Array{Int64,1}:
- 95
- 18
- 67
-  3
- 13
- 26
- 23
- 19
- 40
+ 31
+ 21
  29
-  ⋮
- 23
- 18
- 40
- 22
- 53
- 45
-  7
+ 25
+ 96
+ 88
+ 51
  17
- 20</code></pre>
+ 73
+ 11
+  ⋮
+ 38
+ 23
+ 17
+ 97
+ 72
+ 45
+ 57
+ 73
+ 35</code></pre>
 <p>Why do we <code>sample!</code>? It is a convention in Julia that functions ending with a <code>!</code> <em>modify one of their arguments</em>. A look at the documentation of <code>sample!</code> will reveal that it will fill its second argument with randomly sampled elements from the first. This avoids writing a loop, and is aggressively optimized.</p>
 <p>How many unique species on our island?</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">length(unique(island))</code></pre></div>
-<pre class="output"><code>97</code></pre>
+<pre class="output"><code>96</code></pre>
 <p>Note that we do not assign the result of this operation to <code>island</code>. Functions with a <code>!</code> operate on the argument itself, so there is no need to assign anything.</p>
 <p>The next step, is to write a function that will take <code>island</code> and <code>mainland</code> as its arguments, and modify <code>island</code> as a function of the <code>e</code> and <code>m</code> parameters. Because this function will <em>modify</em> <code>island</code>, its name will end with a <code>!</code>.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="kw">function</span> zerosumdrift!(is::<span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">1</span>}, ml::<span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">1</span>}, e::<span class="dt">Float64</span>, m::<span class="dt">Float64</span>)
@@ -120,39 +120,39 @@ sample!(mainland, island)</code></pre></div>
 <p>Let's test this:</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">zerosumdrift!(island, mainland, <span class="fl">0.4</span>, <span class="fl">0.2</span>)
 length(unique(island))</code></pre></div>
-<pre class="output"><code>96</code></pre>
+<pre class="output"><code>92</code></pre>
 <p>Now, what happens over 100 timesteps?</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="kw">for</span> i = <span class="fl">1</span>:<span class="fl">100</span>
   zerosumdrift!(island, mainland, <span class="fl">0.4</span>, <span class="fl">0.2</span>)
 <span class="kw">end</span>
 length(unique(island))</code></pre></div>
-<pre class="output"><code>80</code></pre>
+<pre class="output"><code>81</code></pre>
 <h2 id="looking-at-the-dynamics-version-1">Looking at the dynamics, version 1</h2>
 <p>What if we want to record the output of a given function, at each timestep? This will be easy!</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia"><span class="co"># Let&#39;s start again with a new island</span>
 sample!(mainland, island)
 map((x) -&gt; length(unique(zerosumdrift!(island, mainland, <span class="fl">0.4</span>, <span class="fl">0.2</span>))), <span class="fl">1</span>:<span class="fl">100</span>)</code></pre></div>
 <pre class="output"><code>100-element Array{Int64,1}:
- 95
+ 97
  93
- 91
  90
- 88
- 88
+ 87
  88
  86
- 88
+ 83
+ 83
+ 84
  84
   ⋮
- 76
- 78
+ 81
+ 81
+ 79
+ 81
  82
+ 85
+ 86
  83
- 78
- 77
- 78
- 80
- 86</code></pre>
+ 85</code></pre>
 <p>This line will repeat the <code>zerosumdrift!</code> function 100 times, but because it is wrapped in the measurement of how many species there are, it will instead return the number of unique species. This is <em>one</em> way to store the dynamics.</p>
 <h2 id="looking-at-the-dynamics-version-2">Looking at the dynamics, version 2</h2>
 <p>But the previous way may not be optimal, for a <em>lot</em> of reasons. We might want to keep the output in a matrix, for example. So let us pre-allocate one, and fill it step by step.</p>
@@ -164,31 +164,31 @@ output[:,<span class="fl">1</span>] = sample!(mainland, island)
 <span class="kw">end</span>
 output[:,<span class="fl">100</span>]</code></pre></div>
 <pre class="output"><code>400-element Array{Int64,1}:
- 61
- 71
- 30
- 75
- 75
- 68
- 24
+ 85
+ 66
+ 86
+ 48
+ 63
  29
- 26
- 25
-  ⋮
+ 39
  93
- 62
- 96
- 95
- 31
- 41
- 71
- 65
- 96</code></pre>
+  1
+ 21
+  ⋮
+ 80
+ 45
+ 11
+  1
+ 55
+ 18
+ 63
+ 85
+ 64</code></pre>
 <p>We <em>can</em> do this, because Julia will still return the values of the object if modifies. The <code>output</code> matrix is accessed by columns.</p>
 <p>Now, can we do something <em>like</em> <code>map</code> on an array with more than one dimension? Yes! We can use <code>mapslices</code>. As its name indicates, <code>mapslices</code> will <code>map</code> over <em>slices</em> of an array, here meaning either rows or columns. When compared to <code>map</code>, it takes an additional argument, which is the <em>dimension</em> on which to slice. Since the different timesteps are columns, which are the first dimension in Julia, we will use <code>1</code>.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">mapslices((x) -&gt; length(unique(x)), output, <span class="fl">1</span>)</code></pre></div>
 <pre class="output"><code>1x100 Array{Int64,2}:
- 97  94  93  88  88  88  86  87  85  …  80  79  73  79  81  79  83  79  81</code></pre>
+ 97  97  95  91  85  86  88  85  88  …  75  81  79  80  75  78  79  79  81</code></pre>
 <h1 id="conclusions">Conclusions</h1>
 <ol type="1">
 <li>Functions that end with <code>!</code> modify their input.</li>
@@ -198,8 +198,10 @@ output[:,<span class="fl">100</span>]</code></pre></div>
 <li>Functions are great and you should use them all the time.</li>
 </ol>
 <div class="footer">
-  <p class="muted">Last modified by Timothée Poisot on mer aoû 26 15:04:59 EDT 2015. Generated with
-  <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.</p>
+  <p class="muted">Last modified by Timothée Poisot on jeu aoû 27 11:04:31 EDT 2015. Generated with
+  <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.
+  <br/>Footer image from the <a href="http://mvz.berkeley.edu/DoingNaturalHistory/herpsfield.html">MVZ, Berkeley</a>.
+</p>
 </div>
       </div>
       </div>
@@ -207,7 +209,7 @@ output[:,<span class="fl">100</span>]</code></pre></div>
       <div class="col-sm-3 col-sm-pull-9 sidebar">
         <div id="chapters">
           <ul class="toc list nav">
-            <li><a class="toc-current-doc">Chapters</a></li>
+            <li><a class="toc-current-doc">Julia for ecologists</a></li>
             <li><a href="index.html">Home</a></li>
             <li><a href="01_primer.html">Julia primer</a></li>
             <li><a href="02_competition.html">Competition models</a></li>

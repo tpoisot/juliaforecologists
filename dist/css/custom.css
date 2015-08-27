@@ -1,28 +1,37 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic|Roboto+Condensed:400,400italic,700,700italic,300,300italic|Roboto+Mono:400,400italic,500,500italic&subset=latin,greek);
+@import url(https://fonts.googleapis.com/css?family=PT+Mono|PT+Sans:400,400italic,700,700italic|PT+Serif:400,400italic,700,700italic);
+b,
+strong {
+  font-weight: 700;
+}
 html,
 body {
-  bakground-color: #fafafa;
   color: #424242;
   font-size: 1.1em;
   line-height: 1.55em;
   height: 100%;
   min-height: 100%;
 }
+body {
+  background: url("../bg.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
 .container {
   height: auto;
   min-height: 100%;
-  background-color: #464646;
+  background-color: rgba(235, 235, 235, 0.95);
 }
 .sidebar {
-  background-color: #464646;
   height: 100%;
   min-height: 100%;
 }
 .content {
-  background-color: #fafafa;
+  background-color: #fdfdfd;
 }
 body {
-  font-family: "Roboto";
+  font-family: "PT Serif";
 }
 h1,
 h2,
@@ -30,7 +39,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Roboto Condensed";
+  font-family: "PT Sans";
 }
 h1 {
   font-weight: bold;
@@ -61,7 +70,7 @@ dl dd {
 }
 #table-of-contents,
 #chapters {
-  font-family: "Roboto Condensed";
+  font-family: "PT Sans";
   font-size: 0.6em;
 }
 #table-of-contents {
@@ -77,25 +86,25 @@ dl dd {
 }
 .toc-current-doc {
   font-weight: bold !important;
-  color: #fafafa !important;
+  color: #424242 !important;
   text-transform: uppercase !important;
 }
 .nav > li > a {
   padding: 0px 1px;
-  color: #c8c8c8;
+  color: #848484;
 }
 .nav > li > a:hover {
   background: 0;
-  color: #fafafa;
+  color: #424242;
 }
 .nav > li.active > a {
   padding: 0px 1px;
-  color: #ebebeb;
+  color: #626262;
   font-weight: bold;
 }
 .nav > li.active > a:hover {
   background: 0;
-  color: #fafafa;
+  color: #424242;
 }
 .footer {
   padding: 15px 15px;
@@ -105,14 +114,14 @@ dl dd {
   margin: -15px;
   margin-top: 8em;
   margin-bottom: 0;
-  background-color: #d5d5d5;
+  background-color: #d8d8d8;
 }
 pre {
   border: 0px;
   border-radius: 0px;
   background: 0;
   margin: 0 0;
-  padding: 8px;
+  padding: 15px;
   margin: -15px;
 }
 pre.sourceCode,
@@ -121,23 +130,23 @@ pre.output {
   line-height: 1.5em;
   margin-top: 2em;
   margin-bottom: 2em;
-  font-family: "Roboto Mono", "Consolas", "DejaVu Sans Mono", monospace;
+  font-family: "PT Mono Mono", "Consolas", "DejaVu Sans Mono", monospace;
 }
 pre.sourceCode {
-  background-color: #707070;
-  color: #fafafa;
+  background-color: #717171;
+  color: #fdfdfd;
 }
 pre.output {
-  background-color: #f4f4f4;
+  background-color: #f7f7f7;
   color: #424242;
   margin-top: -2.1em;
   z-index: 10000;
 }
 code {
-  font-family: "Roboto Mono", "Consolas", "DejaVu Sans Mono", monospace;
+  font-family: "PT Mono Mono", "Consolas", "DejaVu Sans Mono", monospace;
   background: 0;
   color: #545454;
-  background: #e8e8e8;
+  background: #ebebeb;
   border-radius: 5px;
 }
 code.sourceCode span.kw {

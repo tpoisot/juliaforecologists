@@ -12,7 +12,8 @@ environments. Julia is simple to learn, easy to write, and runs extremely fast.
 
 Ecology, evolution, and many other life sciences are dominated by R, and to a
 lesser extent, Python. Both are excellent languages. Julia is a good complement
-to both.
+to both. It is less statistic-oriented than R, and built on modern principles.
+It is also *really* easy to learn.
 
 # What will I find here?
 
@@ -36,6 +37,28 @@ If you don't want to install anything on your machine, I recommend you use
 in an interactive environment.
 
 [jb]: http://www.juliabox.org/
+
+If you are looking for resources, there are two pages you should bookmark. The
+first is [Learn Julia in Y minutes][ymin]. It is a very good overview of the
+language. The second is [The Fast Track to Julia][ft]. Both would be good things
+to keep around when reading this document.
+
+[ymin]: http://learnxinyminutes.com/docs/julia/
+[ft]: https://dl.dropboxusercontent.com/u/8252984/julia.html
+
+The [official documentation][odoc] is also excellent, and remarkably easy to
+read. The [Julia for R programmers][jfru] by Douglas Bates is also an excellent
+overview of how R and Julia have complementary strengths.
+
+[odoc]: http://julia.readthedocs.org/en/stable/
+[jfru]: http://www.stat.wisc.edu/~bates/JuliaForRProgrammers.pdf
+
+What you should probably *not* read is the countless number of "R is better than
+Julia", "Julia is better than R", "R is better than Python", "Python is barely
+better than pulling out your own teeth with a rusty plier" threads. Very few are
+about the qualities of the languages themselves; they instead tend to be about
+people finding justifications for not learning new things. Languages are tools.
+Find one you know how to use.
 
 # List of chapters
 

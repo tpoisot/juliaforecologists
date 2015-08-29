@@ -8,12 +8,12 @@
 @fg: #424242;
 
 // Base colors
-@red:    #d94029;
-@orange: #f79d15;
-@green:  #1ebd28;
-@blue:   #247ed9;
-@cyan:   #a7e2de;
-@purple: #b394be;
+@red:    rgb(156, 84, 77);
+@orange: rgb(170, 123, 76);
+@green:  rgb(66, 144, 64);
+@blue:   rgb(87, 134, 173);
+@cyan:   rgb(66, 140, 128);
+@purple: rgb(149, 110, 153);
 
 @very-light-gray: #ebebeb;
 @light-gray:      #c8c8c8;
@@ -185,7 +185,7 @@ pre {
     font-family: @mono;
   }
   &.sourceCode {
-    background-color: mix(@bg, @fg, 25%);
+    background-color: mix(@bg, @fg, 5%);
     color: @bg;
   }
   &.output {
@@ -208,14 +208,14 @@ code {
 
 code.sourceCode span.kw { color: @purple; }
 code.sourceCode span.dt { color: @cyan; }
-code.sourceCode span.dv { color: #40a070; }
-code.sourceCode span.bn { color: #40a070; }
+code.sourceCode span.dv { color: @cyan; }
+code.sourceCode span.bn { color: @cyan; }
 code.sourceCode span.fl { color: @orange; }
-code.sourceCode span.ch { color: #4070a0; }
+code.sourceCode span.ch { color: @blue; }
 code.sourceCode span.st { color: @green; }
 code.sourceCode span.co { color: @light-gray; }
-code.sourceCode span.ot { color: #007020; }
-code.sourceCode span.al { color: red; }
-code.sourceCode span.fu { color: #06287e; }
+code.sourceCode span.ot { color: @green; }
+code.sourceCode span.al { color: @red; }
+code.sourceCode span.fu { color: @blue; }
 code.sourceCode span.re { }
 code.sourceCode span.er { color: @red; }

@@ -58,7 +58,7 @@ h2 {
 }
 #body-content a:hover {
   color: #424242;
-  text-decoration-color: #1ebd28;
+  text-decoration-color: #429040;
 }
 dl {
   margin-top: 2em;
@@ -133,7 +133,7 @@ pre.output {
   font-family: "PT Mono Mono", "Consolas", "DejaVu Sans Mono", monospace;
 }
 pre.sourceCode {
-  background-color: #717171;
+  background-color: #4b4b4b;
   color: #fdfdfd;
 }
 pre.output {
@@ -150,38 +150,38 @@ code {
   border-radius: 5px;
 }
 code.sourceCode span.kw {
-  color: #b394be;
+  color: #956e99;
 }
 code.sourceCode span.dt {
-  color: #a7e2de;
+  color: #428c80;
 }
 code.sourceCode span.dv {
-  color: #40a070;
+  color: #428c80;
 }
 code.sourceCode span.bn {
-  color: #40a070;
+  color: #428c80;
 }
 code.sourceCode span.fl {
-  color: #f79d15;
+  color: #aa7b4c;
 }
 code.sourceCode span.ch {
-  color: #4070a0;
+  color: #5786ad;
 }
 code.sourceCode span.st {
-  color: #1ebd28;
+  color: #429040;
 }
 code.sourceCode span.co {
   color: #c8c8c8;
 }
 code.sourceCode span.ot {
-  color: #007020;
+  color: #429040;
 }
 code.sourceCode span.al {
-  color: red;
+  color: #9c544d;
 }
 code.sourceCode span.fu {
-  color: #06287e;
+  color: #5786ad;
 }
 code.sourceCode span.er {
-  color: #d94029;
+  color: #9c544d;
 }

@@ -10,6 +10,7 @@
   <script src="js/bootstrap.min.js" type="text/javascript"></script>
   <script src="js/list.min.js" type="text/javascript"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.010/css/hack-extended.min.css">
 </head>
 <body>
 
@@ -46,7 +47,7 @@
 <span class="kw">end</span></code></pre></div>
 <p>Then we can test it:</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark <span class="fl">2</span> + <span class="fl">2</span></code></pre></div>
-<pre class="output"><code>1.4475999999999998e-7</code></pre>
+<pre class="output"><code>2.2725999999999996e-7</code></pre>
 <p>The output is the <em>average</em> time needed, in seconds, to run this particular expression, over 50 replicate runs.</p>
 <h2 id="defining-the-testing-dataset">Defining the testing dataset</h2>
 <p>We will use a large number of species, to be able to tell whether we can improve the performance of the function.</p>
@@ -56,26 +57,26 @@
 <span class="kw">const</span> r = rand(n_species) .+ <span class="fl">0.2</span>;
 <span class="kw">const</span> n = rand(n_species);</code></pre></div>
 <pre class="output"><code>1000-element Array{Float64,1}:
- 0.791228
- 0.776211
- 0.25531 
- 0.262222
- 0.229881
- 0.8728  
- 0.777802
- 0.281408
- 0.580783
- 0.588345
- ⋮       
- 0.215578
- 0.805045
- 0.287733
- 0.727257
- 0.923413
- 0.345791
- 0.436805
- 0.560533
- 0.627301</code></pre>
+ 0.00424957
+ 0.642792  
+ 0.468735  
+ 0.278829  
+ 0.18238   
+ 0.792819  
+ 0.264333  
+ 0.918532  
+ 0.608721  
+ 0.765026  
+ ⋮         
+ 0.649037  
+ 0.125087  
+ 0.633494  
+ 0.266592  
+ 0.371523  
+ 0.672415  
+ 0.586813  
+ 0.395537  
+ 0.990586  </code></pre>
 <p>It is unlikely that these values are going to have any sort of ecological relevance, but this is not really what this example is about.</p>
 <h1 id="first-attempt">First attempt</h1>
 <h2 id="implementation">Implementation</h2>
@@ -96,7 +97,7 @@
 <h2 id="is-it-fast">Is it fast?</h2>
 <p>Let's see.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_1(n, r ,A)</code></pre></div>
-<pre class="output"><code>0.00455425292</code></pre>
+<pre class="output"><code>0.00534429668</code></pre>
 <p>Not bad. On the order of <span class="math inline">10<sup> − 3</sup></span> seconds. It's a poorly written baseline, and it's already not too bad. Remember we are talking about 1000 species.</p>
 <h1 id="second-attempt">Second attempt</h1>
 <h2 id="implementation-1">Implementation</h2>
@@ -116,7 +117,7 @@
 <h2 id="is-it-fast-1">Is it fast?</h2>
 <p>Let's see.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_2(n, r ,A)</code></pre></div>
-<pre class="output"><code>0.00447506642</code></pre>
+<pre class="output"><code>0.0045412214</code></pre>
 <p>How about that? It performs the same as the previous version. Almost exactly the same in fact. Well, this can mean one of two things. Either our naive interpretation was the most efficient, or we are not optimizing the right thing.</p>
 <h1 id="third-attempt">Third attempt</h1>
 <h2 id="implementation-2">Implementation</h2>
@@ -129,7 +130,7 @@
 <h2 id="is-it-fast-2">Is it fast?</h2>
 <p>Let's see.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@benchmark glvm_3(n, r ,A)</code></pre></div>
-<pre class="output"><code>0.00057928948</code></pre>
+<pre class="output"><code>0.0005668474199999999</code></pre>
 <p><em>It's SO FAST YOU GUYS!</em></p>
 <p>Almost an order of magnitude faster than the loop-based solutions.</p>
 <h1 id="conclusions">Conclusions</h1>
@@ -140,7 +141,7 @@
 <li>Using <code>const</code> for global variables is a way to improve performance.</li>
 </ol>
 <div class="footer">
-  <p class="muted">Last modified by Timothée Poisot on jeu aoû 27 11:05:07 EDT 2015. Generated with
+  <p class="muted">Last modified by Timothée Poisot on lun sep  7 22:11:25 EDT 2015. Generated with
   <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.
   <br/>Footer image from the <a href="http://mvz.berkeley.edu/DoingNaturalHistory/herpsfield.html">MVZ, Berkeley</a>.
 </p>

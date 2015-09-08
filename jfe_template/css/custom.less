@@ -1,19 +1,19 @@
-@import url(https://fonts.googleapis.com/css?family=PT+Mono|PT+Sans:400,400italic,700,700italic|PT+Serif:400,400italic,700,700italic);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700|Open+Sans:400,400italic,600,600italic&subset=latin,greek);
 
-@caption: "PT Sans";
-@serif: "PT Serif";
-@mono: "PT Mono Mono", "Consolas", "DejaVu Sans Mono", monospace;
+@caption: "Open Sans Condensed";
+@serif: "Open Sans";
+@mono: Hack, monospace;
 
 @bg: #fdfdfd;
-@fg: #424242;
+@fg: #323232;
 
 // Base colors
-@red:    rgb(156, 84, 77);
-@orange: rgb(170, 123, 76);
-@green:  rgb(66, 144, 64);
-@blue:   rgb(87, 134, 173);
-@cyan:   rgb(66, 140, 128);
-@purple: rgb(149, 110, 153);
+@red:    rgb(166, 77, 77);
+@orange: rgb(209, 134, 60);
+@green:  rgb(83, 150, 82);
+@blue:   rgb(78, 121, 166);
+@cyan:   rgb(88, 168, 163);
+@purple: rgb(133, 81, 138);
 
 @very-light-gray: #ebebeb;
 @light-gray:      #c8c8c8;
@@ -85,7 +85,6 @@ h2 {
 // TODO style tables
 
 // Links
-
 #body-content {
   a {
     text-decoration: underline;
@@ -185,11 +184,11 @@ pre {
     font-family: @mono;
   }
   &.sourceCode {
-    background-color: mix(@bg, @fg, 5%);
+    background-color: mix(@bg, @fg, 1%);
     color: @bg;
   }
   &.output {
-    background-color: mix(@bg, @fg, 97%);
+    background-color: mix(@bg, @fg, 98%);
     color: @fg;
     margin-top: -2.1em;
     z-index: 10000;

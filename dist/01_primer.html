@@ -10,6 +10,7 @@
   <script src="js/bootstrap.min.js" type="text/javascript"></script>
   <script src="js/list.min.js" type="text/javascript"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.010/css/hack-extended.min.css">
 </head>
 <body>
 
@@ -84,13 +85,13 @@
 <h1 id="macros">Macros</h1>
 <p>Macros are an interesting feature of Julia, which are enabled by very strong <a href="http://julia.readthedocs.org/en/latest/manual/metaprogramming/">meta-programming</a> abilities. Macros in Julia are noted <code>@macro</code>. For example, the <code>@elapsed</code> macro measures the time needed to perform an instruction.</p>
 <div class="sourceCode"><pre class="sourceCode julia julia"><code class="sourceCode julia">@elapsed rand((<span class="fl">10</span>, <span class="fl">10</span>))^<span class="fl">4.0</span> <span class="co"># A random matrix, to the power of 4</span></code></pre></div>
-<pre class="output"><code>1.461003384</code></pre>
+<pre class="output"><code>1.263028572</code></pre>
 <h1 id="packages">Packages</h1>
 <p>Julia is starting to develop a good ecosystem of packages. There may not be a lot, but there are usually high quality, and designed with performance in mind. Many non-trivial operations have packages to perform them.</p>
 <h2 id="installing-packages">Installing packages</h2>
 <h2 id="updating-packages">Updating packages</h2>
 <div class="footer">
-  <p class="muted">Last modified by Timothée Poisot on jeu aoû 27 11:04:05 EDT 2015. Generated with
+  <p class="muted">Last modified by Timothée Poisot on lun sep  7 22:10:19 EDT 2015. Generated with
   <a href="https://github.com/dcjones/Judo.jl">Judo</a>. Contribute to this project on <a href="https://github.com/tpoisot/juliaforecologists">GitHub</a>.
   <br/>Footer image from the <a href="http://mvz.berkeley.edu/DoingNaturalHistory/herpsfield.html">MVZ, Berkeley</a>.
 </p>

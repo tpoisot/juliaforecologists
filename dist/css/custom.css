@@ -1,11 +1,11 @@
-@import url(https://fonts.googleapis.com/css?family=PT+Mono|PT+Sans:400,400italic,700,700italic|PT+Serif:400,400italic,700,700italic);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700|Open+Sans:400,400italic,600,600italic&subset=latin,greek);
 b,
 strong {
   font-weight: 700;
 }
 html,
 body {
-  color: #424242;
+  color: #323232;
   font-size: 1.1em;
   line-height: 1.55em;
   height: 100%;
@@ -31,7 +31,7 @@ body {
   background-color: #fdfdfd;
 }
 body {
-  font-family: "PT Serif";
+  font-family: "Open Sans";
 }
 h1,
 h2,
@@ -39,7 +39,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "PT Sans";
+  font-family: "Open Sans Condensed";
 }
 h1 {
   font-weight: bold;
@@ -57,8 +57,8 @@ h2 {
   color: #626262;
 }
 #body-content a:hover {
-  color: #424242;
-  text-decoration-color: #429040;
+  color: #323232;
+  text-decoration-color: #539652;
 }
 dl {
   margin-top: 2em;
@@ -70,7 +70,7 @@ dl dd {
 }
 #table-of-contents,
 #chapters {
-  font-family: "PT Sans";
+  font-family: "Open Sans Condensed";
   font-size: 0.6em;
 }
 #table-of-contents {
@@ -86,7 +86,7 @@ dl dd {
 }
 .toc-current-doc {
   font-weight: bold !important;
-  color: #424242 !important;
+  color: #323232 !important;
   text-transform: uppercase !important;
 }
 .nav > li > a {
@@ -95,7 +95,7 @@ dl dd {
 }
 .nav > li > a:hover {
   background: 0;
-  color: #424242;
+  color: #323232;
 }
 .nav > li.active > a {
   padding: 0px 1px;
@@ -104,7 +104,7 @@ dl dd {
 }
 .nav > li.active > a:hover {
   background: 0;
-  color: #424242;
+  color: #323232;
 }
 .footer {
   padding: 15px 15px;
@@ -114,7 +114,7 @@ dl dd {
   margin: -15px;
   margin-top: 8em;
   margin-bottom: 0;
-  background-color: #d8d8d8;
+  background-color: #d4d4d4;
 }
 pre {
   border: 0px;
@@ -130,58 +130,58 @@ pre.output {
   line-height: 1.5em;
   margin-top: 2em;
   margin-bottom: 2em;
-  font-family: "PT Mono Mono", "Consolas", "DejaVu Sans Mono", monospace;
+  font-family: Hack, monospace;
 }
 pre.sourceCode {
-  background-color: #4b4b4b;
+  background-color: #343434;
   color: #fdfdfd;
 }
 pre.output {
-  background-color: #f7f7f7;
-  color: #424242;
+  background-color: #f9f9f9;
+  color: #323232;
   margin-top: -2.1em;
   z-index: 10000;
 }
 code {
-  font-family: "PT Mono Mono", "Consolas", "DejaVu Sans Mono", monospace;
+  font-family: Hack, monospace;
   background: 0;
-  color: #545454;
+  color: #444444;
   background: #ebebeb;
   border-radius: 5px;
 }
 code.sourceCode span.kw {
-  color: #956e99;
+  color: #85518a;
 }
 code.sourceCode span.dt {
-  color: #428c80;
+  color: #58a8a3;
 }
 code.sourceCode span.dv {
-  color: #428c80;
+  color: #58a8a3;
 }
 code.sourceCode span.bn {
-  color: #428c80;
+  color: #58a8a3;
 }
 code.sourceCode span.fl {
-  color: #aa7b4c;
+  color: #d1863c;
 }
 code.sourceCode span.ch {
-  color: #5786ad;
+  color: #4e79a6;
 }
 code.sourceCode span.st {
-  color: #429040;
+  color: #539652;
 }
 code.sourceCode span.co {
   color: #c8c8c8;
 }
 code.sourceCode span.ot {
-  color: #429040;
+  color: #539652;
 }
 code.sourceCode span.al {
-  color: #9c544d;
+  color: #a64d4d;
 }
 code.sourceCode span.fu {
-  color: #5786ad;
+  color: #4e79a6;
 }
 code.sourceCode span.er {
-  color: #9c544d;
+  color: #a64d4d;
 }
